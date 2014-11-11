@@ -1,3 +1,5 @@
+(function (){
+
 angular.module('<%= _.camelize(name) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate']);
 <% if (!uirouter) { %>
 angular.module('<%= _.camelize(name) %>').config(function($routeProvider) {
@@ -12,3 +14,4 @@ angular.module('<%= _.camelize(name) %>').config(function($stateProvider) {
 
 });
 <% } %>
+})();

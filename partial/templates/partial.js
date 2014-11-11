@@ -1,4 +1,4 @@
-function (){
+(function (){
 
     function <%= ctrlname %> (){
         var vm = this;
