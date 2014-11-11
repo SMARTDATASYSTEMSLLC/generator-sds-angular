@@ -1,6 +1,9 @@
-angular.module('<%= appname %>').factory('<%= _.camelize(name) %>',function() {
+function (){
+    function <%= _.camelize(name) %>() {
+        var self = {};
+        return self;
+    }
 
-	var <%= _.camelize(name) %> = {};
+    angular.module('<%= appname %>').factory('<%= _.camelize(name) %>',<%= _.camelize(name) %>);
 
-	return <%= _.camelize(name) %>;
-});
+})();

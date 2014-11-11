@@ -1,4 +1,9 @@
-angular.module('<%= appname %>').controller('<%= ctrlname %>',function($scope){
+function (){
 
+    function <%= ctrlname %> (){
+        var vm = this;
+    }
 
-});
+    angular.module('<%= appname %>').controller('<%= ctrlname %>', <%= ctrlname %>);
+
+})();

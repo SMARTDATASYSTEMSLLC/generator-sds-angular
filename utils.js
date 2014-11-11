@@ -92,7 +92,11 @@ exports.injectRoute = function(moduleFile,uirouter,name,route,routeUrl,that){
         var code = '$stateProvider.state(\''+name+'\', {\n        url: \''+route+'\',\n        templateUrl: \''+routeUrl+'\'\n    });';
         exports.addToFile(moduleFile,code,exports.STATE_MARKER);
     } else {
-        exports.addToFile(moduleFile,'$routeProvider.when(\''+route+'\',{templateUrl: \''+routeUrl+'\'});',exports.ROUTE_MARKER);
+        exports.addToFile(moduleFile,'$routeProvider.when(\''+route+'\',{\n' +
+        '        templateUrl: \''+routeUrl+'\',\n' +
+        '        controllerAs: \'vm\',\n' +
+        '        controller: \''+name+'\',\n' +
+        '});',exports.ROUTE_MARKER);
     }
 
     that.log.writeln(chalk.green(' updating') + ' %s',path.basename(moduleFile));
