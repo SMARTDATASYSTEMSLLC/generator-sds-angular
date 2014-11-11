@@ -95,7 +95,7 @@ exports.injectRoute = function(moduleFile,uirouter,name,route,routeUrl,that){
         exports.addToFile(moduleFile,'$routeProvider.when(\''+route+'\',{\n' +
         '        templateUrl: \''+routeUrl+'\',\n' +
         '        controllerAs: \'vm\',\n' +
-        '        controller: \'' + _.camelize(_.classify(this.name)) + 'Ctrl\'\n' +
+        '        controller: \'' + _.camelize(_.classify(name)) + 'Ctrl\'\n' +
         '});',exports.ROUTE_MARKER);
     }
 
