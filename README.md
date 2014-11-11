@@ -1,8 +1,8 @@
-#generator-cg-angular
+#generator-sds-angular
 
->Yeoman Generator for Enterprise Angular Projects
+>Yeoman Generator for Smart Data Systems
 
-This generator follows the [Angular Best Practice Guidelines for Project Structure](http://blog.angularjs.org/2014/02/an-angularjs-style-guide-and-best.html).
+This generator follows the [Angular Best Practice Guidelines for Project Structure](https://github.com/johnpapa/angularjs-styleguide).
 
 Features
 
@@ -71,13 +71,13 @@ Prerequisites: Node, Grunt, Yeoman, and Bower.  Once Node is installed, do:
 
 Next, install this generator:
 
-    npm install -g generator-cg-angular
+    npm install -g git+https://github.com/dben/generator-sds-angular
 
 To create a project:
 
     mkdir MyNewAwesomeApp
     cd MyNewAwesomeApp
-    yo cg-angular
+    yo sds-angular
 
 Grunt Tasks
 -------------
@@ -104,12 +104,12 @@ There are generators for `directive`,`partial`,`service`, `filter`, `module`, an
 
 Running a generator:
 
-    yo cg-angular:directive my-awesome-directive
-    yo cg-angular:partial my-partial
-    yo cg-angular:service my-service
-    yo cg-angular:filter my-filter
-    yo cg-angular:module my-module
-    yo cg-angular:modal my-modal
+    yo sds-angular:directive my-awesome-directive
+    yo sds-angular:partial my-partial
+    yo sds-angular:service my-service
+    yo sds-angular:filter my-filter
+    yo sds-angular:module my-module
+    yo sds-angular:modal my-modal
 
 The name paramater passed (i.e. 'my-awesome-directive') will be used as the file names.  The generators will derive appropriate class names from this parameter (ex. 'my-awesome-directive' will convert to a class name of 'MyAwesomeDirective').  Each sub-generator will ask for the folder in which to create the new skeleton files.  You may override the default folder for each sub-generator in the `.yo-rc.json` file.
 
@@ -120,7 +120,7 @@ Subgenerators are also customizable.  Please read [CUSTOMIZING.md](CUSTOMIZING.m
 Submodules
 -------------
 
-Submodules allow you to more explicitly separate parts of your application.  Use the `yo cg-angular:module my-module` command and specify a new subdirectory to place the module into.  Once you've created a submodule, running other subgenerators will now prompt you to select the module in which to place the new component.
+Submodules allow you to more explicitly separate parts of your application.  Use the `yo sds-angular:module my-module` command and specify a new subdirectory to place the module into.  Once you've created a submodule, running other subgenerators will now prompt you to select the module in which to place the new component.
 
 Preconfigured Libraries
 -------------
@@ -154,6 +154,7 @@ Importantly, grunt-dom-munger uses CSS attribute selectors to manage the parsing
 
 Release History
 -------------
+* 11/10/2014 - SDS fork
 * 11/9/2014 - v3.2.0 - Switch from ngmin to ng-annotate.  Disabling grunt-contrib-imagemin so Windows users don't encounter its issues.  Subgenerators prompt for a name if not entered.  Other fixes.
 * 7/6/2014 - v3.1.2 - Fix for directive template URLs with backslashes on Windows.
 * 6/10/2014 - v3.1.1 - Fix for backslashes being used in injected routes/tags on subgenerators.
@@ -163,7 +164,7 @@ Release History
 * 2/10/2014 - v2.1.1 - Fix for the directive spec file named with a .less extension.
 * 1/06/2014 - v2.1.0 - Nice enhancements for unit testing.  Specs are now placed in the same directory as the component they're testing.  Additionally, unit tests are now run during `grunt server` allowing for an easy and efficient test-driven workflow.
 * 12/30/2013 - v2.0.0 - Big Update.  Angular 1.2 and Bootstrap 3.  Newer versions of Angular UI, Font Awesome, and JQuery.  Lodash was replaced with Underscore.  Lots of other small changes.
-* 9/06/2013 - V1.0.4 - Fixed templating issue with generated specs for `yo cg-angular:service` subgenerator.
+* 9/06/2013 - V1.0.4 - Fixed templating issue with generated specs for `yo sds-angular:service` subgenerator.
 * 8/29/2013 - V1.0.3 - Renamed `/lib` back to `/bower_components` as clarity trumps brevity.  Renamed `/bin` to `/dist`. Fixed spelling error in generated directive's js template location.  Moved up to later version of `yeoman-generator` dependency to solve "Cannot read bold of undefined" error coming from Yeoman.  JSHint options now read from `.jshintrc`.  And more small stuff.
 * 7/08/2013 - V1.0.2 - Added utf8 charset to index.html.  Fix for "EMFile, too many open files" on `grunt watch` by no longer watching the `lib` folder.
 * 6/20/2013 - v1.0.1 - Fixed a ton of known issues.  Replaced `grunt-regarde` with `grunt-contrib-watch`.  Fixed and tweaked the unit test specs and `grunt test`.  Fixed issues with the build.  Generator is now ready for real use.
