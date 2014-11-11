@@ -1,3 +1,5 @@
+(function (){
+
 angular.module('<%= _.camelize(appname) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate']);
 <% if (!uirouter) { %>
 angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
@@ -28,3 +30,5 @@ angular.module('<%= _.camelize(appname) %>').run(function($rootScope) {
     };
 
 });
+
+})();
