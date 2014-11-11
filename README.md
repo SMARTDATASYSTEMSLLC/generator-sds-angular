@@ -4,64 +4,6 @@
 
 This generator follows the [Angular Best Practice Guidelines for Project Structure](https://github.com/johnpapa/angularjs-styleguide).
 
-Features
-
-* Provides a directory structure geared towards large Angular projects.
-    * Each controller, service, filter, and directive are placed in their own file.
-    * All files related to a conceptual unit are placed together.  For example, the controller, HTML, LESS, and unit test for a partial are placed together in the same directory.
-* Provides a ready-made Grunt build that produces an extremely optimized distribution.
-   * Build uses [grunt-ng-annotate](https://github.com/olov/ng-annotate) so you don't have to use the Angular injection syntax for safe minification (i.e. you dont need `$inject` or `(['$scope','$http',...`.
-   * `grunt serve` task allows you to run a simple development server with watch/livereload enabled.  Additionally, JSHint and the appropriate unit tests are run for the changed files.
-* Integrates Bower for package management
-* Includes Yeoman subgenerators for directives, services, partials, filters, and modules.
-* Integrates LESS and includes Bootstrap via the source LESS files allowing you to reuse Bootstrap vars/mixins/etc.
-* Easily Testable - Each sub-generator creates a skeleton unit test.  Unit tests can be run via `grunt test` and they run automatically during the grunt watch that is active during `grunt serve`.
-
-Directory Layout
--------------
-All subgenerators prompt the user to specify where to save the new files.  Thus you can create any directory structure you desire, including nesting.  The generator will create a handful of files in the root of your project including `index.html`, `app.js`, and `app.less`.  You determine how the rest of the project will be structured.
-
-In this example, the user has chosen to group the app into an `admin` folder, a `search` folder, and a `service` folder.
-
-
-    app.less ....................... main app-wide styles
-    app.js ......................... angular module initialization and route setup
-    index.html ..................... main HTML file
-    Gruntfile.js ................... Grunt build file
-    /admin ......................... example admin module folder
-      admin.js ..................... admin module initialization and route setup
-      admin.less ................... admin module LESS
-      /admin-directive1 ............ angular directives folder
-        admin-directive1.js ........ example simple directive
-        admin-directive1-spec.js.... example simple directive unit test
-      /admin-directive2 ............ example complex directive (contains external partial)
-        admin-directive2.js ........ complex directive javascript
-        admin-directive2.html ...... complex directive partial
-        admin-directive2.less ...... complex directive LESS
-        admin-directive2-spec.js ... complex directive unit test
-      /admin-partial ............... example partial
-        admin-partial.html ......... example partial html
-        admin-partial.js ........... example partial controller
-        admin-partial.less ......... example partial LESS
-        admin-partial-spec.js ...... example partial unit test
-    /search ........................ example search component folder
-      my-filter.js ................. example filter
-      my-filter-spec.js ............ example filter unit test
-      /search-partial .............. example partial
-        search-partial.html ........ example partial html
-        search-partial.js .......... example partial controller
-        search-partial.less ........ example partial LESS
-        search-partial-spec.js ..... example partial unit test
-    /service ....................... angular services folder
-        my-service.js .............. example service
-        my-service-spec.js ......... example service unit test
-        my-service2.js ............. example service
-        my-service2-spec.js ........ example service unit test
-    /img ........................... images (not created by default but included in /dist if added)
-    /dist .......................... distributable version of app built using grunt and Gruntfile.js
-    /bower_component................ 3rd party libraries managed by bower
-    /node_modules .................. npm managed libraries used by grunt
-
 Getting Started
 -------------
 
@@ -150,6 +92,66 @@ Importantly, grunt-dom-munger uses CSS attribute selectors to manage the parsing
 * To prevent a script or stylesheet from being included in concatenation, put a `data-concat="false"` attribute on the link or script tag.  This is currently applied for the `livereload.js` and `less.js` script tags.
 
 * To prevent a script or link tag from being removed from the finalized `index.html`, use a `data-remove="false"` attribute.
+
+Features
+------------
+
+* Provides a directory structure geared towards large Angular projects.
+    * Each controller, service, filter, and directive are placed in their own file.
+    * All files related to a conceptual unit are placed together.  For example, the controller, HTML, LESS, and unit test for a partial are placed together in the same directory.
+* Provides a ready-made Grunt build that produces an extremely optimized distribution.
+   * Build uses [grunt-ng-annotate](https://github.com/olov/ng-annotate) so you don't have to use the Angular injection syntax for safe minification (i.e. you dont need `$inject` or `(['$scope','$http',...`.
+   * `grunt serve` task allows you to run a simple development server with watch/livereload enabled.  Additionally, JSHint and the appropriate unit tests are run for the changed files.
+* Integrates Bower for package management
+* Includes Yeoman subgenerators for directives, services, partials, filters, and modules.
+* Integrates LESS and includes Bootstrap via the source LESS files allowing you to reuse Bootstrap vars/mixins/etc.
+* Easily Testable - Each sub-generator creates a skeleton unit test.  Unit tests can be run via `grunt test` and they run automatically during the grunt watch that is active during `grunt serve`.
+
+Directory Layout
+-------------
+All subgenerators prompt the user to specify where to save the new files.  Thus you can create any directory structure you desire, including nesting.  The generator will create a handful of files in the root of your project including `index.html`, `app.js`, and `app.less`.  You determine how the rest of the project will be structured.
+
+In this example, the user has chosen to group the app into an `admin` folder, a `search` folder, and a `service` folder.
+
+
+    app.less ....................... main app-wide styles
+    app.js ......................... angular module initialization and route setup
+    index.html ..................... main HTML file
+    Gruntfile.js ................... Grunt build file
+    /admin ......................... example admin module folder
+      admin.js ..................... admin module initialization and route setup
+      admin.less ................... admin module LESS
+      /admin-directive1 ............ angular directives folder
+        admin-directive1.js ........ example simple directive
+        admin-directive1-spec.js.... example simple directive unit test
+      /admin-directive2 ............ example complex directive (contains external partial)
+        admin-directive2.js ........ complex directive javascript
+        admin-directive2.html ...... complex directive partial
+        admin-directive2.less ...... complex directive LESS
+        admin-directive2-spec.js ... complex directive unit test
+      /admin-partial ............... example partial
+        admin-partial.html ......... example partial html
+        admin-partial.js ........... example partial controller
+        admin-partial.less ......... example partial LESS
+        admin-partial-spec.js ...... example partial unit test
+    /search ........................ example search component folder
+      my-filter.js ................. example filter
+      my-filter-spec.js ............ example filter unit test
+      /search-partial .............. example partial
+        search-partial.html ........ example partial html
+        search-partial.js .......... example partial controller
+        search-partial.less ........ example partial LESS
+        search-partial-spec.js ..... example partial unit test
+    /service ....................... angular services folder
+        my-service.js .............. example service
+        my-service-spec.js ......... example service unit test
+        my-service2.js ............. example service
+        my-service2-spec.js ........ example service unit test
+    /img ........................... images (not created by default but included in /dist if added)
+    /dist .......................... distributable version of app built using grunt and Gruntfile.js
+    /bower_component................ 3rd party libraries managed by bower
+    /node_modules .................. npm managed libraries used by grunt
+
 
 
 Release History
