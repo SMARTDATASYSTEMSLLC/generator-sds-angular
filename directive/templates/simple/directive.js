@@ -1,5 +1,5 @@
 (function () {
-
+    'use strict';
     function <%= _.camelize(name) %> (){
         return {
             restrict: 'A',

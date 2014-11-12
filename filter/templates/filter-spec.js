@@ -1,6 +1,6 @@
 describe('<%= _.camelize(name) %>', function() {
-
-	beforeEach(module('<%= appname %>'));
+    'use strict';
+    beforeEach(module('<%= appname %>'));
 
 	it('should ...', inject(function($filter) {
 
