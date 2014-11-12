@@ -13,7 +13,7 @@ Prerequisites: Node, Grunt, Yeoman, and Bower.  Once Node is installed, do:
 
 Next, install this generator:
 
-    npm install -g git+https://github.com/dben/generator-sds-angular
+    npm install -g git+https://github.com/SMARTDATASYSTEMSLLC/generator-sds-angular
 
 To create a project:
 
