@@ -15,6 +15,7 @@
     "grunt-contrib-less": "~0.8",
     "grunt-contrib-uglify": "~0.2",
     "grunt-contrib-watch": "~0.6",
+      "grunt-wiredep": "~1.9",
     "grunt-dom-munger": "~3.4",
     "grunt-karma": "~0.8.3",
     "grunt-ng-annotate": "~0.5",

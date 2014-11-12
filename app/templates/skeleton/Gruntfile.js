@@ -45,6 +45,10 @@ module.exports = function (grunt) {
       }
     },
     watch: {
+        bower: {
+            files: ['bower.json'],
+            tasks: ['wiredep']
+        },
       main: {
         options: {
             livereload: true,
@@ -101,6 +105,12 @@ module.exports = function (grunt) {
           //{src: ['bower_components/angular-mocks/angular-mocks.js'], dest: 'dist/'}
         ]
       }
+    },
+      wiredep: {
+          app: {
+              src: ['<%%= yeoman.app %>/index.html'],
+              ignorePath:  /\.\.\//
+          }
     },
     dom_munger:{
       read: {
@@ -164,7 +174,7 @@ module.exports = function (grunt) {
         }
       }
     },
-    //Imagemin has issues on Windows.  
+    //Imagemin has issues on Windows.
     //To enable imagemin:
     // - "npm install grunt-contrib-imagemin"
     // - Comment in this section
@@ -200,9 +210,27 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build',['jshint','clean:before','less','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin','clean:after']);
+  grunt.registerTask('build',[
+      'jshint',
+      'clean:before',
+      'wiredep',
+      'less',
+      'dom_munger',
+      'ngtemplates',
+      'cssmin',
+      'concat',
+      'ngAnnotate',
+      'uglify',
+      'copy',
+      'htmlmin',
+      'clean:after'
+  ]);
   grunt.registerTask('serve', ['dom_munger:read','jshint','connect', 'watch']);
-  grunt.registerTask('test',['dom_munger:read','karma:all_tests']);
+  grunt.registerTask('test',['dom_munger:read','karma:all_tests'])
+    grunt.registerTask('default', [
+        'test',
+        'build'
+    ]);
 
   grunt.event.on('watch', function(action, filepath) {
     //https://github.com/gruntjs/grunt-contrib-watch/issues/156

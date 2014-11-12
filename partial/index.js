@@ -38,6 +38,9 @@ PartialGenerator.prototype.askFor = function askFor() {
         if (props.name){
             this.name = props.name;
         }
+        if (props.route[0] !== '/'){
+            props.route = '/' + props.route;
+        }
         this.route = url.resolve('',props.route);
         cgUtils.askForModuleAndDir('partial',this,true,cb);
     }.bind(this));
