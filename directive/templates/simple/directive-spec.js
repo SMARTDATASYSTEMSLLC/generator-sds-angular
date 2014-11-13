@@ -1,6 +1,6 @@
 describe('<%= _.camelize(name) %>', function() {
-
-  beforeEach(module('<%= appname %>'));
+    'use strict';
+    beforeEach(module('<%= appname %>'));
 
   var scope,compile;
 
@@ -11,7 +11,7 @@ describe('<%= _.camelize(name) %>', function() {
 
   it('should ...', function() {
 
-    /* 
+    /*
     To test your directive, you need to create some html that would use your directive,
     send that through compile() then compare the results.
 

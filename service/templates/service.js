@@ -1,4 +1,5 @@
 (function (){
+    'use strict';
     function <%= _.camelize(name) %>() {
         var self = {};
         return self;
