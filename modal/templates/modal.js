@@ -1,4 +1,5 @@
 (function (){
+    'use strict';
 
     function <%= ctrlname %> (){
         var vm = this;

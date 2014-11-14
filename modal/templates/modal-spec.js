@@ -1,4 +1,5 @@
 describe('<%= ctrlname %>', function() {
+    'use strict';
 
 	beforeEach(module('<%= appname %>'));
 

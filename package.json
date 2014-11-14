@@ -1,22 +1,31 @@
 {
   "name": "generator-sds-angular",
-  "version": "3.2.2",
-  "description": "Yeoman Generator for Enterprise Angular projects.",
+  "version": "3.2.3",
+  "description": "Yeoman Generator for SDS Angular projects. (based on generator-cg-angular)",
   "keywords": [
     "yeoman-generator",
     "angular"
   ],
-  "homepage": "https://github.com/cgross/generator-cg-angular",
-  "bugs": "https://github.com/cgross/generator-cg-angular/issues",
-  "author": {
-    "name": "Chris Gross",
-    "email": "schtoo@schtoo.com",
-    "url": "https://github.com/cgross"
-  },
+  "homepage": "https://github.com/SMARTDATASYSTEMSLLC/generator-sds-angular",
+  "bugs": "https://github.com/SMARTDATASYSTEMSLLC/generator-sds-angular/issues",
+  "authors": [
+      {
+          "name": "David Benson",
+          "url": "https://github.com/dben"
+      },
+      {
+          "name": "Steve Gentile",
+          "url": "https://github.com/sgentile"
+      },
+      {
+          "name": "Chris Gross",
+          "url": "https://github.com/cgross"
+      }
+  ],
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/cgross/generator-cg-angular.git"
+    "url": "https://github.com/SMARTDATASYSTEMSLLC/generator-sds-angular.git"
   },
   "scripts": {
     "test": "mocha"
