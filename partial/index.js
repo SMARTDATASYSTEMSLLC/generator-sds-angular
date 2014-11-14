@@ -28,7 +28,7 @@ PartialGenerator.prototype.askFor = function askFor() {
     var prompts = [
         {
             name: 'route',
-            message: 'Enter your route url (i.e. /mypartial/:id).  If you don\'t want a route added for you, leave this empty.'
+            message: 'Enter your route url (i.e. /mypartial/:id).  If you want /, leave this empty.'
         }
     ];
 
@@ -50,11 +50,16 @@ PartialGenerator.prototype.files = function files() {
 
     this.ctrlname = _.camelize(_.classify(this.name)) + 'Ctrl';
 
+    if (this.route && this.route.length > 0) {
+        this.routeUrl = this.dir + this.name + '.html';
+    }
+
     cgUtils.processTemplates(this.name,this.dir,'partial',this,null,null,this.module);
 
-    if (this.route && this.route.length > 0){
-        var partialUrl = this.dir + this.name + '.html';
-        cgUtils.injectRoute(this.module.file,this.config.get('uirouter'),this.name,this.route,partialUrl,this);
-    }
+
+    //if (this.route && this.route.length > 0){
+    //    var partialUrl = this.dir + this.name + '.html';
+    //    cgUtils.injectRoute(this.module.file,this.config.get('uirouter'),this.name,this.route,partialUrl,this);
+    //}
 
 };
