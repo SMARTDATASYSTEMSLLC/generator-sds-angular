@@ -7,7 +7,8 @@
                 .when('<%= route %>', {
                     templateUrl: '<%= routeUrl %>',
                     controller: '<%= ctrlname %>',
-                    controllerAs: "vm"
+                    controllerAs: "vm",
+                    title: ''
                 });
         }]);
 

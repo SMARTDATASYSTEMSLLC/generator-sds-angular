@@ -31,8 +31,8 @@ ServiceGenerator.prototype.askFor = function askFor() {
         if (props.name){
             this.name = props.name;
         }
-        cgUtils.askForModuleAndDir('service',this,false,cb);
-    }.bind(this));     
+        cgUtils.askForModuleAndDir('service',this,true,cb);
+    }.bind(this));
 
 };
 
