@@ -5,7 +5,7 @@ The following guide will describe the steps needed to take a project generated u
 
 The new v3.0 generator has moved some files, made small changes how script tags and @import statements are injected, and offers users the ability to create a completely custom directory structure.  To convert a v2 project to v3.0, do the following:
 
-1. Rename and move `js/setup.js` to `init.js`.  Modify the related script tag in `index.html`.
+1. Rename and move `js/setup.js` to `app.js`.  Modify the related script tag in `index.html`.
 2. Move `css/app.less` to `app.less`.  Modify the related link tag in `index.html`.
 3. In `app.less`, modify the existing @import statements and remove the `../` from the beginning of the @import statements for all partial and directive less files.
 4. In `app.less`, combine the two comment-separated sections for partial and directive less into one section.  Modify the bottom comment marker of this section to be `/* Add Component LESS Above */`.
@@ -68,7 +68,7 @@ Upgrading from v3.0 to v3.1
 }
 ```
 
-2. Modify your `init.js` file.  The v3.1 generator does not generate the chained calls to `$routeProvider`.  Please update the `init.js` so that the contents of the `config` method call look something like:
+2. Modify your `app.js` file.  The v3.1 generator does not generate the chained calls to `$routeProvider`.  Please update the `app.js` so that the contents of the `config` method call look something like:
 
 ```js
     /* Add New Routes Above */
