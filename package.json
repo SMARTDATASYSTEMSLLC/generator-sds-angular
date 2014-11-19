@@ -1,6 +1,6 @@
 {
   "name": "generator-sds-angular",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "description": "Yeoman Generator for SDS Angular projects. (based on generator-cg-angular)",
   "keywords": [
     "yeoman-generator",
@@ -16,10 +16,6 @@
       {
           "name": "Steve Gentile",
           "url": "https://github.com/sgentile"
-      },
-      {
-          "name": "Chris Gross",
-          "url": "https://github.com/cgross"
       }
   ],
   "main": "app/index.js",

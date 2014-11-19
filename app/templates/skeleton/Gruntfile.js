@@ -127,14 +127,9 @@ module.exports = function (grunt) {
             all: {
                 src: [
                     'Gruntfile.js',
-                    '<%%= yeoman.app %>/scripts/{,*/}*.js'
+                    '<%%= yeoman.app %>/**/*.js',
+                    '!<%%= yeoman.app %>/vendor/**/*.js'
                 ]
-            },
-            test: {
-                options: {
-                    jshintrc: 'test/.jshintrc'
-                },
-                src: ['test/spec/{,*/}*.js']
             }
         },
 
@@ -241,6 +236,15 @@ module.exports = function (grunt) {
             css: ['<%%= yeoman.dist %>/styles/{,*/}*.css'],
             options: {
                 assetsDirs: ['<%%= yeoman.dist %>','<%%= yeoman.dist %>/images']
+            }
+        },
+
+        useminlist: {
+            html: '<%%= yeoman.app %>/index.html',
+            options: {
+                dest: '.tmp/list.json',
+                type: 'js',
+                log: false
             }
         },
 
@@ -371,9 +375,24 @@ module.exports = function (grunt) {
         //
         // Test settings
         karma: {
-            unit: {
-                configFile: 'test/karma.conf.js',
+            options: {
+                frameworks: ['jasmine'],
+                files: [  //this files data is also updated in the watch handler, if updated change there too
+                    require('./.tmp/list.json').vendor,
+                    require('./.tmp/list.json').main,
+                    'bower_components/angular-mocks/angular-mocks.js',
+                    'app/**/*-spec.js'
+                ],
+                logLevel:'ERROR',
+                reporters:['mocha'],
+                autoWatch: false, //watching is handled by grunt-contrib-watch
                 singleRun: true
+            },
+            all_tests: {
+                browsers: ['PhantomJS']//,'Chrome','Firefox']
+            },
+            during_watch: {
+                browsers: ['PhantomJS']
             }
         }
     });
@@ -403,6 +422,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'useminlist',
         //'concurrent:test',
         'autoprefixer',
         'connect:test',
