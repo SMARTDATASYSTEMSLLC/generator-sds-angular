@@ -4,9 +4,11 @@
   <title ng-bind="title"></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="utf-8">
-  <link href="app.less" type="text/css" rel="stylesheet/less">
+    <!-- build:css(.tmp) main.css -->
     <!-- bower:css -->
     <!-- endbower -->
+    <link href="app.css" type="text/css" rel="stylesheet">
+    <!-- endbuild -->
 </head>
 <body>
 
@@ -18,18 +20,17 @@
     </div>
 </div>
 
-  <!-- Livereload script for development only (stripped during dist build) -->
-  <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
-
-
-    <script src="bower_components/less.js/dist/less.js" data-concat="false"></script>
+<!-- build:js(.) scripts/vendor.js -->
   <!-- bower:js -->
   <!-- endbower -->
+<!--endbuild -->
 
 
-  <!-- Main App JS -->
+
+<!-- Main App JS -->
   <script src="app.js"></script>
   <!-- Add New Component JS Above -->
+<!-- endbuild -->
 
 
 </body>

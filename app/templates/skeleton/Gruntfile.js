@@ -1,280 +1,437 @@
-/*jslint node: true */
+// Generated on 2014-11-19 using generator-angular 0.10.0
 'use strict';
 
-var pkg = require('./package.json');
-
-//Using exclusion patterns slows down Grunt significantly
-//instead of creating a set of patterns like '**/*.js' and '!**/node_modules/**'
-//this method is used to create a set of inclusive patterns for all subdirectories
-//skipping node_modules, bower_components, dist, and any .dirs
-//This enables users to create any directory structure they desire.
-var createFolderGlobs = function(fileTypePatterns) {
-  fileTypePatterns = Array.isArray(fileTypePatterns) ? fileTypePatterns : [fileTypePatterns];
-  var ignore = ['node_modules','bower_components','dist','temp'];
-  var fs = require('fs');
-  return fs.readdirSync(process.cwd())
-          .map(function(file){
-            if (ignore.indexOf(file) !== -1 ||
-                file.indexOf('.') === 0 ||
-                !fs.lstatSync(file).isDirectory()) {
-              return null;
-            } else {
-              return fileTypePatterns.map(function(pattern) {
-                return file + '/**/' + pattern;
-              });
-            }
-          })
-          .filter(function(patterns){
-            return patterns;
-          })
-          .concat(fileTypePatterns);
-};
+// # Globbing
+// for performance reasons we're only matching one level down:
+// 'test/spec/{,*/}*.js'
+// use this if you want to recursively match all subfolders:
+// 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
+    var pkg = require('./package.json');
 
-  // load all grunt tasks
-  require('load-grunt-tasks')(grunt);
+    // Load grunt tasks automatically
+    require('load-grunt-tasks')(grunt);
 
-  // Project configuration.
-  grunt.initConfig({
-    connect: {
-      main: {
-        options: {
-          port: 9001
-        }
-      }
-    },
-    watch: {
-        bower: {
-            files: ['bower.json'],
-            tasks: ['wiredep']
-        },
-      main: {
-        options: {
-            livereload: true,
-            livereloadOnError: false,
-            spawn: false
-        },
-        files: [createFolderGlobs(['*.js','*.less','*.html']),'!_SpecRunner.html','!.grunt'],
-        tasks: [] //all the tasks are run dynamically during the watch event handler
-      }
-    },
-    jshint: {
-      main: {
-        options: {
-            jshintrc: '.jshintrc'
-        },
-        src: createFolderGlobs('*.js')
-      }
-    },
-    clean: {
-      before:{
-        src:['dist','temp']
-      },
-      after: {
-        src:['temp']
-      }
-    },
-    less: {
-      production: {
-        options: {
-        },
-        files: {
-          'temp/app.css': 'app.less'
-        }
-      }
-    },
-    ngtemplates: {
-      main: {
-        options: {
-            module: pkg.name,
-            htmlmin:'<%%= htmlmin.main.options %>'
-        },
-        src: [createFolderGlobs('*.html'),'!index.html','!_SpecRunner.html'],
-        dest: 'temp/templates.js'
-      }
-    },
-    copy: {
-      main: {
-        files: [
-          {src: ['img/**'], dest: 'dist/'},
-          {src: ['bower_components/font-awesome/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
-          {src: ['bower_components/bootstrap/fonts/**'], dest: 'dist/',filter:'isFile',expand:true}
-          //{src: ['bower_components/angular-ui-utils/ui-utils-ieshiv.min.js'], dest: 'dist/'},
-          //{src: ['bower_components/select2/*.png','bower_components/select2/*.gif'], dest:'dist/css/',flatten:true,expand:true},
-          //{src: ['bower_components/angular-mocks/angular-mocks.js'], dest: 'dist/'}
-        ]
-      }
-    },
-      wiredep: {
-          app: {
-              src: ['index.html'],
-              ignorePath:  /\.\.\//
-          }
-    },
-    dom_munger:{
-      read: {
-        options: {
-          read:[
-            {selector:'script[data-concat!="false"]',attribute:'src',writeto:'appjs'},
-            {selector:'link[rel="stylesheet"][data-concat!="false"]',attribute:'href',writeto:'appcss'}
-          ]
-        },
-        src: 'index.html'
-      },
-      update: {
-        options: {
-          remove: ['script[data-remove!="false"]','link[data-remove!="false"]'],
-          append: [
-            {selector:'body',html:'<script src="app.full.min.js"></script>'},
-            {selector:'head',html:'<link rel="stylesheet" href="app.full.min.css">'}
-          ]
-        },
-        src:'index.html',
-        dest: 'dist/index.html'
-      }
-    },
-    cssmin: {
-      main: {
-        src:['temp/app.css','<%%= dom_munger.data.appcss %>'],
-        dest:'dist/app.full.min.css'
-      }
-    },
-    concat: {
-      main: {
-        src: ['<%%= dom_munger.data.appjs %>','<%%= ngtemplates.main.dest %>'],
-        dest: 'temp/app.full.js'
-      }
-    },
-    ngAnnotate: {
-      main: {
-        src:'temp/app.full.js',
-        dest: 'temp/app.full.js'
-      }
-    },
-    uglify: {
-      main: {
-        src: 'temp/app.full.js',
-        dest:'dist/app.full.min.js'
-      }
-    },
-    htmlmin: {
-      main: {
-        options: {
-          collapseBooleanAttributes: true,
-          collapseWhitespace: true,
-          removeAttributeQuotes: true,
-          removeComments: true,
-          removeEmptyAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true
-        },
-        files: {
-          'dist/index.html': 'dist/index.html'
-        }
-      }
-    },
-    //Imagemin has issues on Windows.
-    //To enable imagemin:
-    // - "npm install grunt-contrib-imagemin"
-    // - Comment in this section
-    // - Add the "imagemin" task after the "htmlmin" task in the build task alias
-    // imagemin: {
-    //   main:{
-    //     files: [{
-    //       expand: true, cwd:'dist/',
-    //       src:['**/{*.png,*.jpg}'],
-    //       dest: 'dist/'
-    //     }]
-    //   }
-    // },
-    karma: {
-      options: {
-        frameworks: ['jasmine'],
-        files: [  //this files data is also updated in the watch handler, if updated change there too
-          '<%%= dom_munger.data.appjs %>',
-          'bower_components/angular-mocks/angular-mocks.js',
-          createFolderGlobs('*-spec.js')
-        ],
-        logLevel:'ERROR',
-        reporters:['mocha'],
-        autoWatch: false, //watching is handled by grunt-contrib-watch
-        singleRun: true
-      },
-      all_tests: {
-        browsers: ['PhantomJS','Chrome','Firefox']
-      },
-      during_watch: {
-        browsers: ['PhantomJS']
-      },
-    }
-  });
+    // Time how long tasks take. Can help when optimizing build times
+    require('time-grunt')(grunt);
 
-    grunt.registerTask('build',[
-        'jshint',
-        'clean:before',
+    // Configurable paths for the application
+    var appConfig = {
+        app: require('./bower.json').appPath || 'app',
+        dist: 'dist'
+    };
+
+    // Define the configuration for all the tasks
+    grunt.initConfig({
+
+        // Project settings
+        yeoman: appConfig,
+
+        auto_install: {
+            local: {}
+        },
+
+        // Watches files for changes and runs tasks based on the changed files
+        watch: {
+            bower: {
+                files: ['bower.json'],
+                tasks: ['wiredep']
+            },
+            js: {
+                files: ['<%%= yeoman.app %>/scripts/{,*/}*.js'],
+                tasks: ['newer:jshint:all'],
+                options: {
+                    livereload: '<%%= connect.options.livereload %>'
+                }
+            },
+            jsTest: {
+                files: ['test/spec/{,*/}*.js'],
+                tasks: ['newer:jshint:test', 'karma']
+            },
+            styles: {
+                files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
+                tasks: ['newer:copy:styles', 'autoprefixer']
+            },
+            less: {
+                files: ['<%%= yeoman.app %>/**/*.less'],
+                tasks: ['less']
+            },
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
+            livereload: {
+                options: {
+                    livereload: '<%%= connect.options.livereload %>'
+                },
+                files: [
+                    '<%%= yeoman.app %>/{,*/}*.html',
+                    '.tmp/styles/{,*/}*.css',
+                    '<%%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
+            }
+        },
+
+        // The actual grunt server settings
+        connect: {
+            options: {
+                port: 9000,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            livereload: {
+                options: {
+                    middleware: function (connect) {
+                        return [
+                            connect.static('.tmp'),
+                            connect().use(
+                                '/bower_components',
+                                connect.static('./bower_components')
+                            ),
+                            connect.static(appConfig.app)
+                        ];
+                    }
+                }
+            },
+            test: {
+                options: {
+                    port: 9001,
+                    middleware: function (connect) {
+                        return [
+                            connect.static('.tmp'),
+                            connect.static('test'),
+                            connect().use(
+                                '/bower_components',
+                                connect.static('./bower_components')
+                            ),
+                            connect.static(appConfig.app)
+                        ];
+                    }
+                }
+            },
+            dist: {
+                options: {
+                    open: true,
+                    base: '<%%= yeoman.dist %>'
+                }
+            }
+        },
+
+        // Make sure code styles are up to par and there are no obvious mistakes
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
+            },
+            all: {
+                src: [
+                    'Gruntfile.js',
+                    '<%%= yeoman.app %>/scripts/{,*/}*.js'
+                ]
+            },
+            test: {
+                options: {
+                    jshintrc: 'test/.jshintrc'
+                },
+                src: ['test/spec/{,*/}*.js']
+            }
+        },
+
+        // compiles less
+        less: {
+            production: {
+                options: {
+                },
+                files: {
+                    '.tmp/app.css': 'app/app.less'
+                }
+            }
+        },
+
+        // Empties folders to start fresh
+        clean: {
+            dist: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '<%%= yeoman.dist %>/{,*/}*',
+                        '!<%%= yeoman.dist %>/.git{,*/}*'
+                    ]
+                }]
+            },
+            server: '.tmp'
+        },
+
+        // Add vendor prefixed styles
+        autoprefixer: {
+            options: {
+                browsers: ['last 1 version']
+            },
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/',
+                    src: '{,*/}*.css',
+                    dest: '.tmp/'
+                }]
+            }
+        },
+
+        ngtemplates: {
+            main: {
+                options: {
+                    module: pkg.name,
+                    htmlmin:'<%%= htmlmin.dist.options %>'
+                },
+                cwd: 'app',
+                src: ['**/*.html','!index.html','!_SpecRunner.html', '!vendor/**'],
+                dest: '.tmp/templates.js'
+            }
+        },
+        concat: {
+            main: {
+                src: ['.tmp/concat/scripts/main.js', '.tmp/templates.js',],
+                dest: '.tmp/concat/scripts/main.js'
+            }
+        },
+        // Automatically inject Bower components into the app
+        wiredep: {
+            app: {
+                src: ['<%%= yeoman.app %>/index.html'],
+                ignorePath:  /\.\.\//
+            }
+        },
+
+        // Renames files for browser caching purposes
+        filerev: {
+            dist: {
+                src: [
+                    '<%%= yeoman.dist %>/scripts/{,*/}*.js',
+                    '<%%= yeoman.dist %>/{,*/}*.css',
+                    //'<%%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+                    //'<%%= yeoman.dist %>/styles/fonts/*'
+                ]
+            }
+        },
+
+        // Reads HTML for usemin blocks to enable smart builds that automatically
+        // concat, minify and revision files. Creates configurations in memory so
+        // additional tasks can operate on them
+        useminPrepare: {
+            html: '<%%= yeoman.app %>/index.html',
+            options: {
+                dest: '<%%= yeoman.dist %>',
+                flow: {
+                    html: {
+                        steps: {
+                            js: ['concat', 'uglifyjs'],
+                            css: ['cssmin']
+                        },
+                        post: {}
+                    }
+                }
+            }
+        },
+
+        // Performs rewrites based on filerev and the useminPrepare configuration
+        usemin: {
+            html: ['<%%= yeoman.dist %>/{,*/}*.html'],
+            css: ['<%%= yeoman.dist %>/styles/{,*/}*.css'],
+            options: {
+                assetsDirs: ['<%%= yeoman.dist %>','<%%= yeoman.dist %>/images']
+            }
+        },
+
+        // The following *-min tasks will produce minified files in the dist folder
+        // By default, your `index.html`'s <!-- Usemin block --> will take care of
+        // minification. These next options are pre-configured if you do not wish
+        // to use the Usemin blocks.
+        // cssmin: {
+        //   dist: {
+        //     files: {
+        //       '<%%= yeoman.dist %>/styles/main.css': [
+        //         '.tmp/styles/{,*/}*.css'
+        //       ]
+        //     }
+        //   }
+        // },
+        // uglify: {
+        //   dist: {
+        //     files: {
+        //       '<%%= yeoman.dist %>/scripts/scripts.js': [
+        //         '<%%= yeoman.dist %>/scripts/scripts.js'
+        //       ]
+        //     }
+        //   }
+        // },
+        // concat: {
+        //   dist: {}
+        // },
+
+        htmlmin: {
+            dist: {
+                options: {
+                    collapseWhitespace: true,
+                    conservativeCollapse: true,
+                    collapseBooleanAttributes: true,
+                    removeCommentsFromCDATA: true,
+                    removeOptionalTags: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%%= yeoman.dist %>',
+                    src: ['*.html', 'views/{,*/}*.html'],
+                    dest: '<%%= yeoman.dist %>'
+                }]
+            }
+        },
+
+        // ng-annotate tries to make the code safe for minification automatically
+        // by using the Angular long form for dependency injection.
+        ngAnnotate: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/concat/scripts',
+                    src: ['*.js', '!oldieshim.js'],
+                    dest: '.tmp/concat/scripts'
+                }]
+            }
+        },
+
+        // Replace Google CDN references
+        cdnify: {
+            dist: {
+                html: ['<%%= yeoman.dist %>/*.html']
+            }
+        },
+
+        // Copies remaining files to places other tasks can use
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%%= yeoman.app %>',
+                    dest: '<%%= yeoman.dist %>',
+                    src: [
+                        '*.{ico,png,txt}',
+                        '.htaccess',
+                        '*.html',
+                        'images/**/*'
+                    ]
+                }, {
+                    expand: true,
+                    cwd: '.tmp',
+                    dest: '<%%= yeoman.dist %>',
+                    src: ['*.css']
+                },{
+                    expand: true,
+                    cwd: '.tmp/images',
+                    dest: '<%%= yeoman.dist %>/images',
+                    src: ['generated/*']
+                }, {
+                    expand: true,
+                    cwd: 'bower_components/bootstrap/dist',
+                    src: 'fonts/*',
+                    dest: '<%%= yeoman.dist %>'
+                }, {
+                    expand: true,
+                    src: 'bower_components/font-awesome/fonts/*',
+                    dest: '<%%= yeoman.dist %>'
+                },{
+                    expand: true,
+                    cwd: '<%%= yeoman.app %>',
+                    src: 'vendor/**/*',
+                    dest: '<%%= yeoman.dist %>'
+                }]
+            },
+            styles: {
+                expand: true,
+                cwd: '<%%= yeoman.app %>',
+                dest: '.tmp/',
+                src: '{,*/}*.css'
+            }
+        },
+
+        // Run some tasks in parallel to speed up the build process
+        //concurrent: {
+        //    server: [
+        //        'copy:styles'
+        //    ],
+        //    test: [
+        //        'copy:styles'
+        //    ],
+        //    dist: [
+        //        'copy:styles'
+        //    ]
+        //},
+        //
+        // Test settings
+        karma: {
+            unit: {
+                configFile: 'test/karma.conf.js',
+                singleRun: true
+            }
+        }
+    });
+
+
+    grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'auto_install',
+            'clean:server',
+            'wiredep',
+            'less',
+            //'concurrent:server',
+            'autoprefixer',
+            'connect:livereload',
+            'watch'
+        ]);
+    });
+
+    grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run(['serve:' + target]);
+    });
+
+    grunt.registerTask('test', [
+        'clean:server',
+        //'concurrent:test',
+        'autoprefixer',
+        'connect:test',
+        'karma'
+    ]);
+
+    grunt.registerTask('build', [
+        'clean:dist',
         'wiredep',
         'less',
-        'dom_munger',
+        'useminPrepare',
+        //'concurrent:dist',
+        'autoprefixer',
         'ngtemplates',
-        'cssmin',
-        'concat',
+        'concat:generated',
+        'concat:main',
         'ngAnnotate',
+        'copy:dist',
+        'cdnify',
+        'cssmin',
         'uglify',
-        'copy',
-        'htmlmin',
-        'clean:after'
+        'filerev',
+        'usemin',
+        'htmlmin'
     ]);
-    grunt.registerTask('serve', [
-        'dom_munger:read',
-        'jshint',
-        'wiredep',
-        'connect',
-        'watch'
-    ]);
-    grunt.registerTask('test',[
-        'dom_munger:read',
-        'karma:all_tests'
-    ]);
+
     grunt.registerTask('default', [
+        'newer:jshint',
         'test',
         'build'
     ]);
-
-  grunt.event.on('watch', function(action, filepath) {
-    //https://github.com/gruntjs/grunt-contrib-watch/issues/156
-
-    var tasksToRun = [];
-
-    if (filepath.lastIndexOf('.js') !== -1 && filepath.lastIndexOf('.js') === filepath.length - 3) {
-
-      //lint the changed js file
-      grunt.config('jshint.main.src', filepath);
-      tasksToRun.push('jshint');
-
-      //find the appropriate unit test for the changed file
-      var spec = filepath;
-      if (filepath.lastIndexOf('-spec.js') === -1 || filepath.lastIndexOf('-spec.js') !== filepath.length - 8) {
-        spec = filepath.substring(0,filepath.length - 3) + '-spec.js';
-      }
-
-      //if the spec exists then lets run it
-      if (grunt.file.exists(spec)) {
-        var files = [].concat(grunt.config('dom_munger.data.appjs'));
-        files.push('bower_components/angular-mocks/angular-mocks.js');
-        files.push(spec);
-        grunt.config('karma.options.files', files);
-        tasksToRun.push('karma:during_watch');
-      }
-    }
-
-    //if index.html changed, we need to reread the <script> tags so our next run of karma
-    //will have the correct environment
-    if (filepath === 'index.html') {
-      tasksToRun.push('dom_munger:read');
-    }
-
-    grunt.config('watch.main.tasks',tasksToRun);
-
-  });
 };
