@@ -22,6 +22,12 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    grunt.registerTask('watch:serve', function () {
+
+        delete grunt.config.data.watch.jsTest;
+        grunt.task.run(['watch']);
+    });
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -39,15 +45,15 @@ module.exports = function (grunt) {
                 tasks: ['wiredep']
             },
             js: {
-                files: ['<%%= yeoman.app %>/scripts/{,*/}*.js'],
-                tasks: ['newer:jshint:all'],
+                files: ['<%%= yeoman.app %>/**/*.js'],
+                tasks: ['newer:jshint:all', 'jshint'],
                 options: {
                     livereload: '<%%= connect.options.livereload %>'
                 }
             },
             jsTest: {
-                files: ['test/spec/{,*/}*.js'],
-                tasks: ['newer:jshint:test', 'karma']
+                files: ['<%%= yeoman.app %>/**/*.js'],
+                tasks: ['jshint', 'karma']
             },
             styles: {
                 files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
@@ -65,9 +71,9 @@ module.exports = function (grunt) {
                     livereload: '<%%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%%= yeoman.app %>/{,*/}*.html',
-                    '.tmp/styles/{,*/}*.css',
-                    '<%%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%%= yeoman.app %>/**/*.html',
+                    '.tmp/**/*.css',
+                    '<%%= yeoman.app %>/images/**/*'
                 ]
             }
         },
@@ -100,7 +106,6 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             connect.static('.tmp'),
-                            connect.static('test'),
                             connect().use(
                                 '/bower_components',
                                 connect.static('./bower_components')
@@ -156,7 +161,8 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp'
+            server: '.tmp',
+            test: 'list.json'
         },
 
         // Add vendor prefixed styles
@@ -187,7 +193,7 @@ module.exports = function (grunt) {
         },
         concat: {
             main: {
-                src: ['.tmp/concat/scripts/main.js', '.tmp/templates.js',],
+                src: ['.tmp/concat/scripts/main.js', '.tmp/templates.js'],
                 dest: '.tmp/concat/scripts/main.js'
             }
         },
@@ -204,7 +210,7 @@ module.exports = function (grunt) {
             dist: {
                 src: [
                     '<%%= yeoman.dist %>/scripts/{,*/}*.js',
-                    '<%%= yeoman.dist %>/{,*/}*.css',
+                    '<%%= yeoman.dist %>/{,*/}*.css'
                     //'<%%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
                     //'<%%= yeoman.dist %>/styles/fonts/*'
                 ]
@@ -242,7 +248,7 @@ module.exports = function (grunt) {
         useminlist: {
             html: '<%%= yeoman.app %>/index.html',
             options: {
-                dest: '.tmp/list.json',
+                dest: 'list.json',
                 type: 'js',
                 log: false
             }
@@ -314,6 +320,22 @@ module.exports = function (grunt) {
 
         // Copies remaining files to places other tasks can use
         copy: {
+            dev: {
+                dest: '<%%= yeoman.app %>/service/constants/constants.js',
+                src:  '<%%= yeoman.app %>/service/constants/constants_dev.js'
+            },
+            build: {
+                dest: '<%%= yeoman.app %>/service/constants/constants.js',
+                src:  '<%%= yeoman.app %>/service/constants/constants_build.js'
+            },
+            uat: {
+                dest: '<%%= yeoman.app %>/service/constants/constants.js',
+                src:  '<%%= yeoman.app %>/service/constants/constants_uat.js'
+            },
+            prod: {
+                dest: '<%%= yeoman.app %>/service/constants/constants.js',
+                src:  '<%%= yeoman.app %>/service/constants/constants_prod.js'
+            },
             dist: {
                 files: [{
                     expand: true,
@@ -358,6 +380,7 @@ module.exports = function (grunt) {
                 dest: '.tmp/',
                 src: '{,*/}*.css'
             }
+
         },
 
         // Run some tasks in parallel to speed up the build process
@@ -378,8 +401,8 @@ module.exports = function (grunt) {
             options: {
                 frameworks: ['jasmine'],
                 files: [  //this files data is also updated in the watch handler, if updated change there too
-                    require('./.tmp/list.json').vendor,
-                    require('./.tmp/list.json').main,
+                    require('./list.json').vendor,
+                    require('./list.json').main,
                     'bower_components/angular-mocks/angular-mocks.js',
                     'app/**/*-spec.js'
                 ],
@@ -404,6 +427,7 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
+            'jshint',
             'auto_install',
             'clean:server',
             'wiredep',
@@ -411,7 +435,7 @@ module.exports = function (grunt) {
             //'concurrent:server',
             'autoprefixer',
             'connect:livereload',
-            'watch'
+            'watch:serve'
         ]);
     });
 
@@ -421,7 +445,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('test', [
-        'clean:server',
+        'jshint',
+        'clean:test',
         'useminlist',
         //'concurrent:test',
         'autoprefixer',
@@ -429,7 +454,19 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
+    grunt.registerTask('testserve', [
+        'jshint',
+        'clean:test',
+        'useminlist',
+        //'concurrent:test',
+        'autoprefixer',
+        'connect:test',
+        'karma',
+        'watch:jsTest'
+    ]);
+
     grunt.registerTask('build', [
+        'jshint',
         'clean:dist',
         'wiredep',
         'less',

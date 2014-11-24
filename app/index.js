@@ -15,7 +15,8 @@ var CgangularGenerator = module.exports = function CgangularGenerator(args, opti
         this.config.set('serviceDirectory','service/');
         var inject = {
             js: {
-                file: 'app/index.html',
+                relativeToModule: true,
+                file: 'index.html',
                 marker: cgUtils.JS_MARKER,
                 template: '<script src="<%= filename %>"></script>'
             },

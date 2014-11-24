@@ -30,7 +30,6 @@ exports.addToFile = function(filename,lineToAdd,beforeMarker){
 };
 
 exports.processTemplates = function(name,dir,type,that,defaultDir,configName,module){
-
     if (!defaultDir) {
         defaultDir = 'templates'
     }
@@ -64,6 +63,8 @@ exports.inject = function(filename,that,module) {
         _(filename).endsWith('_test.js')) {
         return;
     }
+
+    console.log(filename, module.file);
 
     var ext = path.extname(filename);
     if (ext[0] === '.') {

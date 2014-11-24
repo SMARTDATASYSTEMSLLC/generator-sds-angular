@@ -51,7 +51,8 @@ DirectiveGenerator.prototype.files = function files() {
         defaultDir = 'templates/complex';
     }
 
-    this.htmlPath = path.join(this.dir,this.name + '.html').replace(/\\/g,'/');
+    // TODO: solve this issue more elegantly
+    this.htmlPath = path.join(this.dir,this.name + '.html').replace(/\\/g,'/').replace('app/', '');
 
     cgUtils.processTemplates(this.name,this.dir,'directive',this,defaultDir,configName,this.module);
 
