@@ -80,6 +80,57 @@ CgangularGenerator.prototype.askForUiRouter = function askFor() {
     }.bind(this));
 };
 
+CgangularGenerator.prototype.askForAuth = function askFor() {
+    var cb = this.async();
+
+    var prompts = [{
+        name: 'router',
+        type:'list',
+        message: 'Do you want to include oauth authentication?',
+        default: 0,
+        choices: ['No','Yes']
+    }];
+
+    this.prompt(prompts, function (props) {
+        if (props.router === 'Yes') {
+            this.hasAuth  = true;
+        } else {
+            this.hasAuth = false;
+        }
+        this.config.set('hasAuth',this.hasAuth);
+        cb();
+    }.bind(this));
+};
+
+CgangularGenerator.prototype.askForControls = function askFor() {
+    var cb = this.async();
+
+    var prompts = [{
+        name: 'router',
+        type:'list',
+        message: 'Do you want to include control directives?',
+        default: 0,
+        choices: ['No','Yes']
+    }];
+
+    this.prompt(prompts, function (props) {
+        if (props.router === 'Yes') {
+            this.hasControls  = true;
+        } else {
+            this.hasControls = false;
+        }
+        this.config.set('hasControls',this.hasControls);
+        cb();
+    }.bind(this));
+};
+
 CgangularGenerator.prototype.app = function app() {
     this.directory('skeleton/','./');
+    if (this.hasAuth){
+        this.directory('auth/','./app/');
+    }
+
+    if (this.hasControls){
+        this.directory('controls/','./app/');
+    }
 };

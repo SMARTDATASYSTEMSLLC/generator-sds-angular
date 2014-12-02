@@ -1,6 +1,12 @@
 (function (){
     'use strict';
-    angular.module('<%= _.camelize(appname) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate']);
+    angular.module('<%= _.camelize(appname) %>', [
+        'ui.bootstrap',
+        'ui.utils',
+        '<%= routerModuleName %>',
+        'ngAnimate',
+        'LocalStorageModule'
+    ]);
     <% if (!uirouter) { %>
     angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
 
@@ -30,7 +36,11 @@
         };
 
         $rootScope.$on('$routeChangeSuccess', function (event, current) {
-            $rootScope.title = current.$$route.title;
+            if (current.$$route && current.$$route.title) {
+                $rootScope.title = current.$$route.title;
+            }else{
+                $rootScope.title = '<%= _.camelize(appname) %>';
+            }
         });
 
     });

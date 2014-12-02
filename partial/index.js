@@ -51,7 +51,7 @@ PartialGenerator.prototype.files = function files() {
     this.ctrlname = _.camelize(_.classify(this.name)) + 'Ctrl';
 
     if (this.route && this.route.length > 0) {
-        this.routeUrl = this.dir + this.name + '.html';
+        this.routeUrl = path.join(this.dir,this.name + '.html').replace(/\\/g,'/').replace('app/', '');
     }
 
     cgUtils.processTemplates(this.name,this.dir,'partial',this,null,null,this.module);

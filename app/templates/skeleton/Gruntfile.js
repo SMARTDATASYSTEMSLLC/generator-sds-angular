@@ -28,11 +28,16 @@ module.exports = function (grunt) {
         grunt.task.run(['watch']);
     });
 
+    grunt.registerTask('readlist', function() {
+        grunt.config.data.readlist = require('./.tmp/list.json');
+    });
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
         // Project settings
         yeoman: appConfig,
+        readlist: {},
 
         auto_install: {
             local: {}
@@ -46,14 +51,14 @@ module.exports = function (grunt) {
             },
             js: {
                 files: ['<%%= yeoman.app %>/**/*.js'],
-                tasks: ['newer:jshint:all', 'jshint'],
+                tasks: ['jshint', 'jshint'],
                 options: {
                     livereload: '<%%= connect.options.livereload %>'
                 }
             },
             jsTest: {
                 files: ['<%%= yeoman.app %>/**/*.js'],
-                tasks: ['jshint', 'karma']
+                tasks: ['jshint', 'readlist', 'karma']
             },
             styles: {
                 files: ['<%%= yeoman.app %>/styles/{,*/}*.css'],
@@ -144,7 +149,7 @@ module.exports = function (grunt) {
                 options: {
                 },
                 files: {
-                    '.tmp/app.css': 'app/app.less'
+                    '.tmp/app.css': '<%%= yeoman.app %>/app.less'
                 }
             }
         },
@@ -161,8 +166,7 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp',
-            test: 'list.json'
+            server: '.tmp'
         },
 
         // Add vendor prefixed styles
@@ -248,7 +252,7 @@ module.exports = function (grunt) {
         useminlist: {
             html: '<%%= yeoman.app %>/index.html',
             options: {
-                dest: 'list.json',
+                dest: './.tmp/list.json',
                 type: 'js',
                 log: false
             }
@@ -401,11 +405,13 @@ module.exports = function (grunt) {
             options: {
                 frameworks: ['jasmine'],
                 files: [  //this files data is also updated in the watch handler, if updated change there too
-                    require('./list.json').vendor,
-                    require('./list.json').main,
+                    '<%%= readlist.vendor %>',
+                    '<%%= readlist.main %>',
+                    '.tmp/templates.js',
                     'bower_components/angular-mocks/angular-mocks.js',
-                    'app/**/*-spec.js'
+                    '<%%= yeoman.app %>/**/*-spec.js'
                 ],
+
                 logLevel:'ERROR',
                 reporters:['mocha'],
                 autoWatch: false, //watching is handled by grunt-contrib-watch
@@ -413,9 +419,6 @@ module.exports = function (grunt) {
             },
             all_tests: {
                 browsers: ['PhantomJS']//,'Chrome','Firefox']
-            },
-            during_watch: {
-                browsers: ['PhantomJS']
             }
         }
     });
@@ -446,8 +449,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'jshint',
-        'clean:test',
+        'clean:server',
         'useminlist',
+        'readlist',
+        'ngtemplates',
         //'concurrent:test',
         'autoprefixer',
         'connect:test',
@@ -456,8 +461,10 @@ module.exports = function (grunt) {
 
     grunt.registerTask('testserve', [
         'jshint',
-        'clean:test',
+        'clean:server',
         'useminlist',
+        'readlist',
+        'ngtemplates',
         //'concurrent:test',
         'autoprefixer',
         'connect:test',
