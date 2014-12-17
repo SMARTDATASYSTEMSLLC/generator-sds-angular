@@ -54,30 +54,30 @@ CgangularGenerator.prototype.askFor = function askFor() {
 
 CgangularGenerator.prototype.askForUiRouter = function askFor() {
     var cb = this.async();
-
-    var prompts = [{
-        name: 'router',
-        type:'list',
-        message: 'Which router would you like to use?',
-        default: 0,
-        choices: ['Standard Angular Router','Angular UI Router']
-    }];
-
-    this.prompt(prompts, function (props) {
-        if (props.router === 'Angular UI Router') {
-            this.uirouter = true;
-            this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
-            this.routerModuleName = 'ui.router';
-            this.routerViewDirective = 'ui-view';
-        } else {
+    //
+    //var prompts = [{
+    //    name: 'router',
+    //    type:'list',
+    //    message: 'Which router would you like to use?',
+    //    default: 0,
+    //    choices: ['Standard Angular Router','Angular UI Router']
+    //}];
+    //
+    //this.prompt(prompts, function (props) {
+    //    if (props.router === 'Angular UI Router') {
+    //        this.uirouter = true;
+    //        this.routerJs = 'bower_components/angular-ui-router/release/angular-ui-router.js';
+    //        this.routerModuleName = 'ui.router';
+    //        this.routerViewDirective = 'ui-view';
+    //    } else {
             this.uirouter = false;
             this.routerJs = 'bower_components/angular-route/angular-route.js';
             this.routerModuleName = 'ngRoute';
             this.routerViewDirective = 'ng-view';
-        }
+        //}
         this.config.set('uirouter',this.uirouter);
         cb();
-    }.bind(this));
+    //}.bind(this));
 };
 
 CgangularGenerator.prototype.askForAuth = function askFor() {
@@ -102,35 +102,9 @@ CgangularGenerator.prototype.askForAuth = function askFor() {
     }.bind(this));
 };
 
-CgangularGenerator.prototype.askForControls = function askFor() {
-    var cb = this.async();
-
-    var prompts = [{
-        name: 'router',
-        type:'list',
-        message: 'Do you want to include control directives?',
-        default: 0,
-        choices: ['No','Yes']
-    }];
-
-    this.prompt(prompts, function (props) {
-        if (props.router === 'Yes') {
-            this.hasControls  = true;
-        } else {
-            this.hasControls = false;
-        }
-        this.config.set('hasControls',this.hasControls);
-        cb();
-    }.bind(this));
-};
-
 CgangularGenerator.prototype.app = function app() {
     this.directory('skeleton/','./');
     if (this.hasAuth){
         this.directory('auth/','./app/');
-    }
-
-    if (this.hasControls){
-        this.directory('controls/','./app/');
     }
 };

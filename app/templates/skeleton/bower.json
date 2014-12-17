@@ -42,7 +42,12 @@
         "ngQuickDate": "1.3.3",
         "ng-flow": "2.4.0",
         "angular-sanitize": "~1.3.3",
-        "angular-ui-router": "~0.2.13"
+        "angular-ui-router": "~0.2.13",
+        "autoNumeric": "~1.9.26",
+        "angular-local-storage": "~0.1.5",
+        "angular-jwt": "~0.0.5",
+        "shufflejs": "2.1.1",
+        "sds-angular-controls": "SMARTDATASYSTEMSLLC/sds-angular-controls"
     },
     "overrides": {
         "angular-bootstrap": {

@@ -26,7 +26,7 @@
         "grunt-karma": "~0.8.3",
         "grunt-ng-annotate": "~0.5",
         "grunt-usemin": "^2.6.2",
-        "grunt-usemin-list": "^0.1.4",
+        "grunt-usemin-list": "jldevries/grunt-usemin-list",
         "grunt-wiredep": "~1.9",
         "jshint-stylish": "^1.0.0",
         "karma": "~0.12.6",

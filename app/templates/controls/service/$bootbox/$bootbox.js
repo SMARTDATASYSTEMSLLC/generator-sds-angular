@@ -1,8 +1,7 @@
 (function (){
     'use strict';
     function $bootbox ($modal, $window) {
-        // NOTE: this is a workaround to make BootboxJS somewhat compatible with
-        // Angular UI Bootstrap in the absence of regular bootstrap.js
+
         if ($.fn.modal === undefined) {
             $.fn.modal = function (directive) {
                 var that = this;
