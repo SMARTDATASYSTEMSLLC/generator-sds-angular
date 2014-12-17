@@ -249,6 +249,8 @@ exports.askForDir = function(type,that,module,ownDir,cb){
 };
 
 exports.askForModuleAndDir = function(type,that,ownDir,cb) {
+    that.name = that.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+
     exports.askForModule(type,that,function(module){
         exports.askForDir(type,that,module,ownDir,cb);
     });
@@ -261,6 +263,7 @@ exports.getNameArg = function(that,args){
 };
 
 exports.addNamePrompt = function(that,prompts,type){
+
     if (!that.name){
         prompts.splice(0,0,{
             name:'name',
