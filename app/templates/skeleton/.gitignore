@@ -1,6 +1,12 @@
 temp/
 dist/
-node_modules/
 _SpecRunner.html
 .DS_Store
 test-results.xml
+.idea
+node_modules
+bower_components
+dist
+.tmp
+*.log
+*.css
