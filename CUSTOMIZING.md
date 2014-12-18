@@ -53,11 +53,13 @@ Here is an example configuration that matches the default behavior of the subgen
 	"moduleTemplates": "templates/module",
     "inject": {
       "js": {
+        "relativeToModule": true,
         "file": "index.html",
         "marker": "<!-- Add New Component JS Above -->",
         "template": "<script src=\"<%= filename %>\"></script>"
       },
       "less": {
+        "relativeToModule": true,
         "file": "app.less",
         "marker": "/* Add Component LESS Above */",
         "template": "@import \"<%= filename %>\";"

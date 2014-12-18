@@ -47,7 +47,11 @@ ModalGenerator.prototype.files = function files() {
 	    console.log('');
 	    console.log('  $modal.open({');
 	    console.log('      templateUrl: \'' + path.join(this.dir,this.name + '.html').replace(/\\/g,'/').replace('app/', '') + '\',');
-	    console.log('      controller: \''+ this.ctrlname +'\'');
+	    console.log('      controller: \''+ this.ctrlname +'\',');
+        console.log('      controllerAs: \'vm\',');
+        console.log('      resolve: {');
+        console.log('          //passedInItem: function (){ return 0; }');
+        console.log('      }');
 	    console.log('  }).result.then(function(result){');
 	    console.log('      //do something with the result');
 	    console.log('  });');

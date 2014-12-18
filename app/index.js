@@ -86,7 +86,7 @@ CgangularGenerator.prototype.askForAuth = function askFor() {
     var prompts = [{
         name: 'router',
         type:'list',
-        message: 'Do you want to include oauth authentication?',
+        message: 'Do you want to include an oauth authentication starter?',
         default: 0,
         choices: ['No','Yes']
     }];

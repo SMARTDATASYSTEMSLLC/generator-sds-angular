@@ -10,14 +10,6 @@
             var authData = localStorageService.get('authorizationData');
             if (authData) {
                 config.headers.Authorization = 'Bearer ' + authData.token;
-
-                var tenants = localStorageService.get('tenantData');
-                if(tenants && tenants.currentTenant) {
-                    var userTenant = tenants.currentTenant;
-                    if (userTenant) {
-                        config.headers['Tenant-ID'] = userTenant.tenantId;
-                    }
-                }
             }
 
             return config;
