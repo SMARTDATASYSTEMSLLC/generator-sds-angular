@@ -31,7 +31,7 @@ ModuleGenerator.prototype.askFor = function askFor() {
             name:'dir',
             message:'Where would you like to create the module (must specify a subdirectory)?',
             default: function(data){
-                return path.join(that.name || data.name,'/');
+                return path.join('app/', that.name || data.name,'/');
             },
             validate: function(value) {
                 value = _.str.trim(value);

@@ -51,6 +51,9 @@ exports.processTemplates = function(name,dir,type,that,defaultDir,configName,mod
             //create the file
             that.template(templateFile,path.join(dir,customTemplateName));
             //inject the file reference into index.html/app.less/etc as appropriate
+
+            console.log('dir', dir);
+            console.log('customTemplateName', customTemplateName);
             exports.inject(path.join(dir,customTemplateName),that,module);
         });
 };
@@ -74,12 +77,18 @@ exports.inject = function(filename,that,module) {
     if (config) {
         var configFile = _.template(config.file)({module:path.basename(module.file,'.js')});
         var injectFileRef = filename;
-        if (config.relativeToModule) {
+        if (configFile === 'index.html'){
+            configFile = path.join('app',configFile);
+            injectFileRef = path.relative('app',filename);
+        }else if (config.relativeToModule) {
             configFile = path.join(path.dirname(module.file),configFile);
             injectFileRef = path.relative(path.dirname(module.file),filename);
         }
         injectFileRef = injectFileRef.replace(/\\/g,'/');
         var lineTemplate = _.template(config.template)({filename:injectFileRef});
+
+        console.log(configFile, config.relativeToModule);
+
         exports.addToFile(configFile,lineTemplate,config.marker);
         that.log.writeln(chalk.green(' updating') + ' %s',path.basename(configFile));
     }
