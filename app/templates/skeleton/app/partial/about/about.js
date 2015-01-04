@@ -4,6 +4,6 @@
         var vm = this;
     }
 
-    angular.module('app').controller('AboutCtrl', AboutCtrl);
+    angular.module('<%= _.camelize(appname) %>').controller('AboutCtrl', AboutCtrl);
 
 })();

@@ -1,6 +1,6 @@
 describe('AboutCtrl', function() {
     'use strict';
-	beforeEach(module('app'));
+	beforeEach(module('<%= _.camelize(appname) %>'));
 
 	var scope,ctrl;
 

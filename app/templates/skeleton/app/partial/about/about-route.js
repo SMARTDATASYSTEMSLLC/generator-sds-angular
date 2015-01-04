@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('app')
+    angular.module('<%= _.camelize(appname) %>')
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('/about', {

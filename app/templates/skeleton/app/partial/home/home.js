@@ -4,6 +4,6 @@
         var vm = this;
     }
 
-    angular.module('app').controller('HomeCtrl', HomeCtrl);
+    angular.module('<%= _.camelize(appname) %>').controller('HomeCtrl', HomeCtrl);
 
 })();

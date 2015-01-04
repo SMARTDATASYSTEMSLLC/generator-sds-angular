@@ -1,20 +1,26 @@
 (function (){
     'use strict';
-    angular.module('app', [
+    angular.module('<%= _.camelize(appname) %>', [
         'ui.bootstrap',
         'ui.utils',
-        'ngRoute',
+        '<%= routerModuleName %>',
         'ngAnimate',
         'LocalStorageModule'
     ]);
-
-    angular.module('app').config(function($routeProvider) {
+    <% if (!uirouter) { %>
+    angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
 
         $routeProvider.otherwise({redirectTo:'/home'});
 
     });
+    <% } %><% if (uirouter) { %>
+    angular.module('<%= _.camelize(appname) %>').config(function($stateProvider, $urlRouterProvider) {
 
-    angular.module('app').run(function($rootScope) {
+        $urlRouterProvider.otherwise('/home');
+
+    });
+    <% } %>
+    angular.module('<%= _.camelize(appname) %>').run(function($rootScope) {
 
         $rootScope.safeApply = function(fn) {
             var phase = $rootScope.$$phase;
@@ -31,21 +37,10 @@
             if (current.$$route && current.$$route.title) {
                 $rootScope.title = current.$$route.title;
             }else{
-                $rootScope.title = 'app';
+                $rootScope.title = '<%= _.camelize(appname) %>';
             }
         });
 
     });
-
-    //nav controller
-    function NavMenuCtrl($location){
-        var vm = this;
-
-        vm.isActive = function (viewLocation) {
-            return viewLocation === $location.path();
-        };
-    }
-
-    angular.module('app').controller('NavMenuCtrl', NavMenuCtrl);
 
 })();
