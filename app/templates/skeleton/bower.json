@@ -28,7 +28,7 @@
     "overrides": {
         "angular-bootstrap": {
             "dependencies": {
-                "jquery": "~1"
+                "angular": "~1"
             },
             "main": "ui-bootstrap-tpls.js"
         },
