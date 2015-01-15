@@ -23,11 +23,13 @@
         "angular-ui-utils": "~0.1",
         "angular-bootstrap": ">=0.12",
         "moment": "~2",
-        "font-awesome": "~4",
-
+        "font-awesome": "~4"
     },
     "overrides": {
         "angular-bootstrap": {
+            "dependencies": {
+                "jquery": "~1"
+            },
             "main": "ui-bootstrap-tpls.js"
         },
         "bootstrap": {
