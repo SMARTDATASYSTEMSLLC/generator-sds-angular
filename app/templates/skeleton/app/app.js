@@ -43,4 +43,15 @@
 
     });
 
+	//nav controller
+    function NavMenuCtrl($location){
+        var vm = this;
+
+        vm.isActive = function (viewLocation) {
+            return viewLocation === $location.path();
+        };
+    }
+
+    angular.module('<%= _.camelize(appname) %>').controller('NavMenuCtrl', NavMenuCtrl);
+
 })();

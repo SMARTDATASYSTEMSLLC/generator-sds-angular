@@ -1,6 +1,6 @@
 {
   "name": "generator-sds-angular",
-  "version": "3.3.5",
+  "version": "3.5.4",
   "description": "Yeoman Generator for SDS Angular projects.",
   "keywords": [
     "yeoman-generator",
