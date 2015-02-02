@@ -1,15 +1,15 @@
 (function (){
     'use strict';
-    function authInterceptorService($q, $injector,$location, localStorageService) {
+    function authInterceptorService($q, $injector,$location) {
         var authInterceptorServiceFactory = {};
 
         var _request = function (config) {
 
+            var authService = $injector.get('authService');
             config.headers = config.headers || {};
 
-            var authData = localStorageService.get('authorizationData');
-            if (authData) {
-                config.headers.Authorization = 'Bearer ' + authData.token;
+            if (authService.authentication.isAuth) {
+                config.headers.Authorization = 'Bearer ' + authService.authentication.token;
             }
 
             return config;
@@ -18,11 +18,14 @@
         var _responseError = function (rejection) {
             if (rejection.status === 401) {
                 var authService = $injector.get('authService');
-                var authData = localStorageService.get('authorizationData');
-
-                if (authData) {
-                    if (authData.useRefreshTokens) {
-                        $location.path('/refresh');
+                if (authService.authentication) {
+                    if (authService.authentication.useRefreshTokens) {
+                        authService.refreshToken().then(function (){
+                            $location.reload();
+                        }, function (){
+                            authService.logOut();
+                            $location.path('/login');
+                        });
                         return $q.reject(rejection);
                     }
                 }

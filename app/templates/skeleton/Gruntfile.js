@@ -324,13 +324,9 @@ module.exports = function (grunt) {
 
         // Copies remaining files to places other tasks can use
         copy: {
-            dev: {
+            local: {
                 dest: '<%%= yeoman.app %>/service/constants/constants.js',
-                src:  '<%%= yeoman.app %>/service/constants/constants_dev.js'
-            },
-            build: {
-                dest: '<%%= yeoman.app %>/service/constants/constants.js',
-                src:  '<%%= yeoman.app %>/service/constants/constants_build.js'
+                src:  '<%%= yeoman.app %>/service/constants/constants_local.js'
             },
             uat: {
                 dest: '<%%= yeoman.app %>/service/constants/constants.js',
@@ -386,20 +382,6 @@ module.exports = function (grunt) {
             }
 
         },
-
-        // Run some tasks in parallel to speed up the build process
-        //concurrent: {
-        //    server: [
-        //        'copy:styles'
-        //    ],
-        //    test: [
-        //        'copy:styles'
-        //    ],
-        //    dist: [
-        //        'copy:styles'
-        //    ]
-        //},
-        //
         // Test settings
         karma: {
             options: {
@@ -431,11 +413,11 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'jshint',
+            "copy:local",
             'auto_install',
             'clean:server',
             'wiredep',
             'less',
-            //'concurrent:server',
             'autoprefixer',
             'connect:livereload',
             'watch:serve'
@@ -453,7 +435,6 @@ module.exports = function (grunt) {
         'useminlist',
         'readlist',
         'ngtemplates',
-        //'concurrent:test',
         'autoprefixer',
         'connect:test',
         'karma'
@@ -465,7 +446,6 @@ module.exports = function (grunt) {
         'useminlist',
         'readlist',
         'ngtemplates',
-        //'concurrent:test',
         'autoprefixer',
         'connect:test',
         'karma',
@@ -478,7 +458,6 @@ module.exports = function (grunt) {
         'wiredep',
         'less',
         'useminPrepare',
-        //'concurrent:dist',
         'autoprefixer',
         'ngtemplates',
         'concat:generated',
