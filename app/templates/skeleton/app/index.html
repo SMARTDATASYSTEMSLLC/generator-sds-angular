@@ -13,13 +13,13 @@
 <body>
 
 <div>
-    <div id="content" class="container">
+    <div id="content" class="container-fluid">
 
 		<nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
+            <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">
-                        [Your image and title go here]
+                        <%= _.camelize(appname) %>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" ng-controller="NavMenuCtrl as vm">
@@ -35,9 +35,9 @@
             <div <%= routerViewDirective %>></div>
         </div>
     </div>
-	<footer class="footer">
-        <div class="container">
-            <p class="text-muted">&#0169 2015 [your footer goes here]</p>
+	<footer class="footer navbar-fixed-bottom">
+        <div class="container-fluid">
+            <p class="text-muted">&#0169 2015 <%= _.camelize(appname) %></p>
         </div>
     </footer>
 </div>
