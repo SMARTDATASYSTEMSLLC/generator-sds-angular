@@ -20,7 +20,8 @@
 
     });
     <% } %>
-    angular.module('<%= _.camelize(appname) %>').run(function($rootScope) {
+    angular.module('<%= _.camelize(appname) %>').run(function($rootScope, $location, progressLoader) {
+        var lastUrl = $location.path();
 
         $rootScope.safeApply = function(fn) {
             var phase = $rootScope.$$phase;
@@ -33,13 +34,30 @@
             }
         };
 
+        $rootScope.$on('$routeChangeStart', function (event, current) {
+            //this is needed because
+            //1. on $route.reload no 'success' is fired and the spinner never stops
+            //2. clicking, ie. a node menu again, behaves the same as a route reload
+            if (lastUrl !== $location.path()) {
+                progressLoader.start();
+            }
+
+            lastUrl = $location.path();
+        });
+
         $rootScope.$on('$routeChangeSuccess', function (event, current) {
             if (current.$$route && current.$$route.title) {
                 $rootScope.title = current.$$route.title;
             }else{
                 $rootScope.title = '<%= _.camelize(appname) %>';
             }
+            progressLoader.endAll();
         });
+
+        $rootScope.$on('$routeChangeError', function(){
+            progressLoader.endAll();
+        });
+
 
     });
 

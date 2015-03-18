@@ -2,16 +2,15 @@
 @import "bower_components/font-awesome/less/font-awesome.less";
 
 <% if(bootswatch) {
-  print('/* Bootswatch theme */');
-  print('@import "bower_components/bootswatch/' + bootswatch + '/bootswatch.less";');
-  print('@import "bower_components/bootswatch/' + bootswatch + '/variables.less";');
+  print('/* Bootswatch theme */\n');
+  print('@import "bower_components/bootswatch/' + bootswatch + '/bootswatch.less";\n');
+  print('@import "bower_components/bootswatch/' + bootswatch + '/variables.less";\n');
 } %>
 
 @fa-font-path: "bower_components/font-awesome/fonts";
 @icon-font-path: "bower_components/bootstrap/fonts/";
 
 @import "global.less";
-
 
 /* Component LESS */
 /* Add Partial LESS Above */
@@ -20,3 +19,4 @@
 /* Add Service LESS Above */
 /* Add Filter LESS Above */
 /* Add Component LESS Above */
+
