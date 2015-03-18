@@ -10,13 +10,13 @@
     <% if (!uirouter) { %>
     angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
 
-        $routeProvider.otherwise({redirectTo:'/home'});
+        $routeProvider.otherwise({redirectTo:'/'});
 
     });
     <% } %><% if (uirouter) { %>
     angular.module('<%= _.camelize(appname) %>').config(function($stateProvider, $urlRouterProvider) {
 
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/');
 
     });
     <% } %>

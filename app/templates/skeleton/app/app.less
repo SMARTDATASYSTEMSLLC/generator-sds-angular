@@ -1,47 +1,22 @@
 @import "bower_components/bootstrap/less/bootstrap.less";
 @import "bower_components/font-awesome/less/font-awesome.less";
+
+<% if(bootswatch) {
+  print('/* Bootswatch theme */');
+  print('@import "bower_components/bootswatch/' + bootswatch + '/bootswatch.less";');
+  print('@import "bower_components/bootswatch/' + bootswatch + '/variables.less";');
+} %>
+
 @fa-font-path: "bower_components/font-awesome/fonts";
 @icon-font-path: "bower_components/bootstrap/fonts/";
 
+@import "global.less";
+
+
 /* Component LESS */
+/* Add Partial LESS Above */
+/* Add Modal LESS Above */
+/* Add Directive LESS Above */
+/* Add Service LESS Above */
+/* Add Filter LESS Above */
 /* Add Component LESS Above */
-
-/* Required for Angular UI Bootstrap */
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-input.sm-input{  width: 60px;  }
-input.md-input{  width: 120px; }
-input.lg-input{  width: 360px; }
-
-.clear-xs {
-  @media (max-width: @screen-xs-max) {
-    clear:left;
-  }
-}
-.clear-sm {
-  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
-    clear:left;
-  }
-}
-.clear-md {
-  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
-    clear:left;
-  }
-}
-.clear-lg {
-  @media (min-width: @screen-lg-min) {
-    clear:left;
-  }
-}
-
-/* Personal preference for BS modal.  The LESS below makes the backdrop white and
-   causes the modal to fade in rather than slide in. */
-//@modal-backdrop-bg: white;
-//.modal {
-//	&.fade {
-//		.transition(opacity .3s);
-//	}
-//	&.fade .modal-dialog {
-//		.translate(0,0);
-//	}
-//}

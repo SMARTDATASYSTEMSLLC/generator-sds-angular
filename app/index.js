@@ -2,9 +2,9 @@
 var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
-var cgUtils = require('../utils.js');
+var sdsUtils = require('../utils.js');
 
-var CgangularGenerator = module.exports = function CgangularGenerator(args, options, config) {
+var SdsAngularGenerator = module.exports = function SdsAngularGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
 
     this.on('end', function () {
@@ -17,13 +17,23 @@ var CgangularGenerator = module.exports = function CgangularGenerator(args, opti
             js: {
                 relativeToModule: true,
                 file: 'index.html',
-                marker: cgUtils.JS_MARKER,
+                marker: sdsUtils.JS_MARKER,
+                directiveMarker: sdsUtils.JS_DIRECTIVE_MARKER,
+                filterMarker: sdsUtils.JS_FILTER_MARKER,
+                modalMarker: sdsUtils.JS_MODAL_MARKER,
+                partialMarker: sdsUtils.JS_PARTIAL_MARKER,
+                serviceMarker: sdsUtils.JS_SERVICE_MARKER,
                 template: '<script src="<%= filename %>"></script>'
             },
             less: {
                 relativeToModule: true,
                 file: '<%= module %>.less',
-                marker: cgUtils.LESS_MARKER,
+                marker: sdsUtils.LESS_MARKER,
+                directiveMarker: sdsUtils.LESS_DIRECTIVE_MARKER,
+                filterMarker: sdsUtils.LESS_FILTER_MARKER,
+                modalMarker: sdsUtils.LESS_MODAL_MARKER,
+                partialMarker: sdsUtils.LESS_PARTIAL_MARKER,
+                serviceMarker: sdsUtils.LESS_SERVICE_MARKER,
                 template: '@import "<%= filename %>";'
             }
         };
@@ -35,9 +45,9 @@ var CgangularGenerator = module.exports = function CgangularGenerator(args, opti
     this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 };
 
-util.inherits(CgangularGenerator, yeoman.generators.Base);
+util.inherits(SdsAngularGenerator, yeoman.generators.Base);
 
-CgangularGenerator.prototype.askFor = function askFor() {
+SdsAngularGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
 
     var prompts = [{
@@ -52,7 +62,32 @@ CgangularGenerator.prototype.askFor = function askFor() {
     }.bind(this));
 };
 
-CgangularGenerator.prototype.askForUiRouter = function askFor() {
+SdsAngularGenerator.prototype.askForBootswatch = function askFor() {
+    var cb = this.async();
+    var themes = [
+        'None',
+        'amelia', 'cerulean', 'cosmo', 'cyborg', 'darkly', 'flatly',
+        'fonts', 'journal', 'lumen', 'paper', 'readable', 'sandstone',
+        'simplex', 'slate', 'spacelab', 'superhero', 'united', 'yeti'
+    ];
+
+    var prompts = [{
+        name: 'bootswatch',
+        type: 'list',
+        message: 'Which bootswatch theme would you like to include?',
+        default: 0,
+        choices: themes
+    }];
+
+    this.prompt(prompts, function (props) {
+        if (props.bootswatch) {
+            this.bootswatch = props.bootswatch;
+        }
+        cb();
+    }.bind(this));
+};
+
+SdsAngularGenerator.prototype.askForUiRouter = function askFor() {
     var cb = this.async();
     //
     //var prompts = [{
@@ -80,7 +115,7 @@ CgangularGenerator.prototype.askForUiRouter = function askFor() {
     //}.bind(this));
 };
 
-CgangularGenerator.prototype.askForAuth = function askFor() {
+SdsAngularGenerator.prototype.askForAuth = function askFor() {
     var cb = this.async();
 
     var prompts = [{
@@ -102,7 +137,7 @@ CgangularGenerator.prototype.askForAuth = function askFor() {
     }.bind(this));
 };
 
-CgangularGenerator.prototype.app = function app() {
+SdsAngularGenerator.prototype.app = function app() {
     this.directory('skeleton/','./');
     if (this.hasAuth){
         this.directory('auth/','./app/');

@@ -5,10 +5,22 @@ var chalk = require('chalk');
 _.str = require('underscore.string');
 _.mixin(_.str.exports());
 var ngParseModule = require('ng-parse-module');
+var appExists = fs.existsSync('./.yo-rc.json');
+var appPath = (appExists && JSON.parse(fs.readFileSync('./bower.json')).appPath) || 'app';
 
+exports.JS_MARKER           = "<!-- Add Javascript Above -->";
+exports.JS_PARTIAL_MARKER   = "<!-- Add Partials Above -->";
+exports.JS_MODAL_MARKER     = "<!-- Add Modals Above -->";
+exports.JS_DIRECTIVE_MARKER = "<!-- Add Directives Above -->";
+exports.JS_SERVICE_MARKER   = "<!-- Add Services Above -->";
+exports.JS_FILTER_MARKER    = "<!-- Add Filters Above -->";
 
-exports.JS_MARKER = "<!-- Add New Component JS Above -->";
-exports.LESS_MARKER = "/* Add Component LESS Above */";
+exports.LESS_MARKER           = "/* Add Component LESS Above */";
+exports.LESS_PARTIAL_MARKER   = "/* Add Partial LESS Above */";
+exports.LESS_MODAL_MARKER     = "/* Add Modal LESS Above */";
+exports.LESS_DIRECTIVE_MARKER = "/* Add Directive LESS Above */";
+exports.LESS_SERVICE_MARKER   = "/* Add Service LESS Above */";
+exports.LESS_FILTER_MARKER    = "/* Add Filter LESS Above */";
 
 exports.ROUTE_MARKER = "/* Add New Routes Above */";
 exports.STATE_MARKER = "/* Add New States Above */";
@@ -54,11 +66,11 @@ exports.processTemplates = function(name,dir,type,that,defaultDir,configName,mod
 
             console.log('dir', dir);
             console.log('customTemplateName', customTemplateName);
-            exports.inject(path.join(dir,customTemplateName),that,module);
+            exports.inject(path.join(dir,customTemplateName),that,module, type);
         });
 };
 
-exports.inject = function(filename,that,module) {
+exports.inject = function(filename,that,module, type) {
     //special case to skip unit tests
     if (_(filename).endsWith('-spec.js') ||
         _(filename).endsWith('_spec.js') ||
@@ -78,8 +90,8 @@ exports.inject = function(filename,that,module) {
         var configFile = _.template(config.file)({module:path.basename(module.file,'.js')});
         var injectFileRef = filename;
         if (configFile === 'index.html'){
-            configFile = path.join('app',configFile);
-            injectFileRef = path.relative('app',filename);
+            configFile = path.join(appPath,configFile);
+            injectFileRef = path.relative(appPath,filename);
         }else if (config.relativeToModule) {
             configFile = path.join(path.dirname(module.file),configFile);
             injectFileRef = path.relative(path.dirname(module.file),filename);
@@ -89,7 +101,7 @@ exports.inject = function(filename,that,module) {
 
         console.log(configFile, config.relativeToModule);
 
-        exports.addToFile(configFile,lineTemplate,config.marker);
+        exports.addToFile(configFile,lineTemplate,config[type + 'Marker'] || config.marker);
         that.log.writeln(chalk.green(' updating') + ' %s',path.basename(configFile));
     }
 };
@@ -137,9 +149,8 @@ exports.getParentModule = function(dir){
 };
 
 exports.askForModule = function(type,that,cb){
-
     var modules = that.config.get('modules');
-    var mainModule = ngParseModule.parse('app/app.js');
+    var mainModule = ngParseModule.parse(appPath + '/app.js');
     mainModule.primary = true;
 
     if (!modules || modules.length === 0) {
@@ -269,6 +280,10 @@ exports.getNameArg = function(that,args){
     if (args.length > 0){
         that.name = args[0];
     }
+};
+
+exports.getCleanPath = function (p, file){
+    return path.join(p,file).replace(/\\/g,'/').replace(appPath + '/', '');
 };
 
 exports.addNamePrompt = function(that,prompts,type){

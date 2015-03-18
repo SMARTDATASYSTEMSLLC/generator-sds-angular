@@ -2,17 +2,18 @@
 var util = require('util');
 var yeoman = require('yeoman-generator');
 var path = require('path');
-var cgUtils = require('../utils.js');
+var sdsUtils = require('../utils.js');
 var chalk = require('chalk');
 var _ = require('underscore');
 var fs = require('fs');
+var appPath = require('./bower.json').appPath || 'app';
 
 _.str = require('underscore.string');
 _.mixin(_.str.exports());
 
 var ModuleGenerator = module.exports = function ModuleGenerator(args, options, config) {
 
-    cgUtils.getNameArg(this,args);
+    sdsUtils.getNameArg(this,args);
 
     yeoman.generators.Base.apply(this, arguments);
 
@@ -31,7 +32,7 @@ ModuleGenerator.prototype.askFor = function askFor() {
             name:'dir',
             message:'Where would you like to create the module (must specify a subdirectory)?',
             default: function(data){
-                return path.join('app/', that.name || data.name,'/');
+                return path.join(appPath + '/', that.name || data.name,'/');
             },
             validate: function(value) {
                 value = _.str.trim(value);
@@ -43,7 +44,7 @@ ModuleGenerator.prototype.askFor = function askFor() {
         }
     ];
 
-    cgUtils.addNamePrompt(this,prompts,'module');
+    sdsUtils.addNamePrompt(this,prompts,'module');
 
     this.prompt(prompts, function (props) {
         if (props.name){
@@ -56,12 +57,12 @@ ModuleGenerator.prototype.askFor = function askFor() {
 
 ModuleGenerator.prototype.files = function files() {
 
-    var module = cgUtils.getParentModule(path.join(this.dir,'..'));
+    var module = sdsUtils.getParentModule(path.join(this.dir,'..'));
     module.dependencies.modules.push(_.camelize(this.name));
     module.save();
     this.log.writeln(chalk.green(' updating') + ' %s',path.basename(module.file));
 
-    cgUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
+    sdsUtils.processTemplates(this.name,this.dir,'module',this,null,null,module);
 
     var modules = this.config.get('modules');
     if (!modules) {

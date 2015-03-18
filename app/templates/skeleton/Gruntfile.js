@@ -19,7 +19,7 @@ module.exports = function (grunt) {
     // Configurable paths for the application
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
-        dist: 'dist'
+        dist: require('./bower.json').distPath || 'dist'
     };
 
     grunt.registerTask('watch:serve', function () {
@@ -34,7 +34,15 @@ module.exports = function (grunt) {
 
     // Define the configuration for all the tasks
     grunt.initConfig({
-
+        banner: '/*! \n' +
+        ' * <%%= pkg.title || pkg.name %>\n' +
+        ' * <%%= pkg.description %>\n' +
+        ' * @version <%%= pkg.version %> \n' +
+        ' * \n' +
+        ' * Copyright (c) <%%= grunt.template.today("yyyy") %> <%%= _.pluck(pkg.authors, "name").join(", ") %> \n' +
+        ' * @link <%%= pkg.homepage %> \n' +
+        ' * @license  <%%= _.pluck(pkg.licenses, "type").join(", ") %> \n' +
+        ' */ \n',
         // Project settings
         yeoman: appConfig,
         readlist: {},
@@ -190,12 +198,16 @@ module.exports = function (grunt) {
                     module: pkg.name,
                     htmlmin:'<%%= htmlmin.dist.options %>'
                 },
-                cwd: 'app',
+                cwd: '<%%= yeoman.app %>',
                 src: ['**/*.html','!index.html','!_SpecRunner.html', '!vendor/**'],
                 dest: '.tmp/templates.js'
             }
         },
         concat: {
+            options: {
+                banner: '<%%= banner %>',
+                stripBanners: true
+            },
             main: {
                 src: ['.tmp/concat/scripts/main.js', '.tmp/templates.js'],
                 dest: '.tmp/concat/scripts/main.js'
@@ -258,31 +270,12 @@ module.exports = function (grunt) {
             }
         },
 
-        // The following *-min tasks will produce minified files in the dist folder
-        // By default, your `index.html`'s <!-- Usemin block --> will take care of
-        // minification. These next options are pre-configured if you do not wish
-        // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/{,*/}*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%%= yeoman.dist %>/scripts/scripts.js': [
-        //         '<%%= yeoman.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
+        uglify: {
+            options: {
+                sourceMap: true,
+                preserveComments: 'some'
+            }
+        },
 
         htmlmin: {
             dist: {
@@ -360,8 +353,7 @@ module.exports = function (grunt) {
                     src: ['generated/*']
                 }, {
                     expand: true,
-                    cwd: 'bower_components/bootstrap/dist',
-                    src: 'fonts/*',
+                    src: 'bower_components/bootstrap/fonts/*',
                     dest: '<%%= yeoman.dist %>'
                 }, {
                     expand: true,

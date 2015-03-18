@@ -2,7 +2,7 @@
 var util = require('util');
 var yeoman = require('yeoman-generator');
 var path = require('path');
-var cgUtils = require('../utils.js');
+var sdsUtils = require('../utils.js');
 var chalk = require('chalk');
 var _ = require('underscore');
 var fs = require('fs');
@@ -12,7 +12,7 @@ _.mixin(_.str.exports());
 
 var DirectiveGenerator = module.exports = function DirectiveGenerator(args, options, config) {
 
-    cgUtils.getNameArg(this,args);
+    sdsUtils.getNameArg(this,args);
 
     yeoman.generators.Base.apply(this, arguments);
 
@@ -30,14 +30,14 @@ DirectiveGenerator.prototype.askFor = function askFor() {
         default: true
     }];
 
-    cgUtils.addNamePrompt(this,prompts,'directive');
+    sdsUtils.addNamePrompt(this,prompts,'directive');
 
     this.prompt(prompts, function (props) {
         if (props.name){
             this.name = props.name;
         }
         this.needpartial = props.needpartial;
-        cgUtils.askForModuleAndDir('directive',this,true,cb);
+        sdsUtils.askForModuleAndDir('directive',this,true,cb);
     }.bind(this));
 
 };
@@ -51,9 +51,8 @@ DirectiveGenerator.prototype.files = function files() {
         defaultDir = 'templates/complex';
     }
 
-    // TODO: solve this issue more elegantly
-    this.htmlPath = path.join(this.dir,this.name + '.html').replace(/\\/g,'/').replace('app/', '');
+    this.htmlPath = sdsUtils.getCleanPath(this.dir, this.name + '.html');
 
-    cgUtils.processTemplates(this.name,this.dir,'directive',this,defaultDir,configName,this.module);
+    sdsUtils.processTemplates(this.name,this.dir,'directive',this,defaultDir,configName,this.module);
 
 };

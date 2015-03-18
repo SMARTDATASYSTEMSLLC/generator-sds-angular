@@ -37,29 +37,34 @@
     </div>
 	<footer class="footer">
         <div class="container">
-            <p class="text-muted">&#0169 2015 [your footer goes here]</p>
+            <p class="text-muted">&copy; 2015 [your footer goes here]</p>
         </div>
     </footer>
 </div>
 
-<!-- build:js(.) scripts/vendor.js -->
-  <!-- bower:js -->
-  <!-- endbower -->
+<!-- build:js({.,app}) scripts/vendor.js -->
+<!-- bower:js -->
+<!-- endbower -->
 <!--endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/main.js -->
-<!-- Main App JS -->
-  <script src="app.js"></script>
-<% if (hasAuth) { %>
-<script src="service/authentication/authHooks.js"></script>
-<script src="service/authentication/authService.js"></script>
-<script src="service/authentication/authInterceptorService.js"></script>
-<% } %>
-  <script src="partial/home/home-route.js"></script>
-  <script src="partial/home/home.js"></script>
-  <script src="partial/about/about-route.js"></script>
-  <script src="partial/about/about.js"></script>
-  <!-- Add New Component JS Above -->
+    <script src="app.js"></script>
+
+    <script src="partial/home/home-route.js"></script>
+    <script src="partial/home/home.js"></script>
+    <script src="partial/about/about-route.js"></script>
+    <script src="partial/about/about.js"></script>
+    <!-- Add Partials Above -->
+    <!-- Add Modals Above -->
+    <!-- Add Directives Above -->
+    <!-- Add Services Above -->
+    <% if (hasAuth) { %>
+    <script src="service/authentication/authHooks.js"></script>
+    <script src="service/authentication/authService.js"></script>
+    <script src="service/authentication/authInterceptorService.js"></script>
+    <% } %>
+    <!-- Add Filters Above -->
+    <!-- Add Javascript Above -->
 <!-- endbuild -->
 
 

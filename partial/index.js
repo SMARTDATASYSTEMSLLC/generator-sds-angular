@@ -3,10 +3,9 @@ var util = require('util');
 var yeoman = require('yeoman-generator');
 var path = require('path');
 var fs = require('fs');
-var cgUtils = require('../utils.js');
+var sdsUtils = require('../utils.js');
 var _ = require('underscore');
 var chalk = require('chalk');
-var fs = require('fs');
 var url = require('url');
 
 _.str = require('underscore.string');
@@ -14,7 +13,7 @@ _.mixin(_.str.exports());
 
 var PartialGenerator = module.exports = function PartialGenerator(args, options, config) {
 
-    cgUtils.getNameArg(this,args);
+    sdsUtils.getNameArg(this,args);
 
     yeoman.generators.Base.apply(this, arguments);
 
@@ -32,7 +31,7 @@ PartialGenerator.prototype.askFor = function askFor() {
         }
     ];
 
-    cgUtils.addNamePrompt(this,prompts,'partial');
+    sdsUtils.addNamePrompt(this,prompts,'partial');
 
     this.prompt(prompts, function (props) {
         if (props.name){
@@ -42,24 +41,24 @@ PartialGenerator.prototype.askFor = function askFor() {
             props.route = '/' + props.route;
         }
         this.route = url.resolve('',props.route);
-        cgUtils.askForModuleAndDir('partial',this,true,cb);
+        sdsUtils.askForModuleAndDir('partial',this,true,cb);
     }.bind(this));
 };
 
 PartialGenerator.prototype.files = function files() {
-
     this.ctrlname = _.camelize(_.classify(this.name)) + 'Ctrl';
 
     if (this.route && this.route.length > 0) {
-        this.routeUrl = path.join(this.dir,this.name + '.html').replace(/\\/g,'/').replace('app/', '');
+        this.routeUrl = sdsUtils.getCleanPath(this.dir, this.name + '.html');
+
     }
 
-    cgUtils.processTemplates(this.name,this.dir,'partial',this,null,null,this.module);
+    sdsUtils.processTemplates(this.name,this.dir,'partial',this,null,null,this.module);
 
 
     //if (this.route && this.route.length > 0){
     //    var partialUrl = this.dir + this.name + '.html';
-    //    cgUtils.injectRoute(this.module.file,this.config.get('uirouter'),this.name,this.route,partialUrl,this);
+    //    sdsUtils.injectRoute(this.module.file,this.config.get('uirouter'),this.name,this.route,partialUrl,this);
     //}
 
 };

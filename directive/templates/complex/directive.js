@@ -6,7 +6,7 @@
             replace: true,
             scope: {},
             templateUrl: '<%= htmlPath %>',
-            link: function (scope, element, attrs, fn) {
+            link: function ($scope, $element, $attrs, fn) {
 
 
             }
