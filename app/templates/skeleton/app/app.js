@@ -14,9 +14,19 @@
 
     });
     <% } %><% if (uirouter) { %>
-    angular.module('<%= _.camelize(appname) %>').config(function($stateProvider, $urlRouterProvider) {
+    angular.module('<%= _.camelize(appname) %>').config(function( $componentLoaderProvider) {
 
-        $urlRouterProvider.otherwise('/');
+        $componentLoaderProvider.setComponentFromCtrlMapping(function (name){
+            return name[0].toLowerCase() + name.substr(1, name.length - 5);
+        });
+
+        $componentLoaderProvider.setCtrlNameMapping(function (name){
+            return name[0].toUpperCase() + name.substr(1) + 'Ctrl';
+        });
+
+        $componentLoaderProvider.setTemplateMapping(function (name){
+            return './partial/' + name + '/' + name + '.html';
+        });
 
     });
     <% } %>

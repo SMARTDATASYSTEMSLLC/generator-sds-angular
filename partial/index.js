@@ -47,6 +47,7 @@ PartialGenerator.prototype.askFor = function askFor() {
 
 PartialGenerator.prototype.files = function files() {
     this.ctrlname = _.camelize(_.classify(this.name)) + 'Ctrl';
+    this.uirouter = this.config.get('uirouter');
 
     if (this.route && this.route.length > 0) {
         this.routeUrl = sdsUtils.getCleanPath(this.dir, this.name + '.html');

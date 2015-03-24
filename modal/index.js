@@ -7,6 +7,9 @@ _.str = require('underscore.string');
 _.mixin(_.str.exports());
 var chalk = require('chalk');
 var path = require('path');
+var fs = require('fs');
+var appExists = fs.existsSync('./.yo-rc.json');
+var appPath = (appExists && JSON.parse(fs.readFileSync('./bower.json')).appPath) || 'app';
 
 var ModalGenerator = module.exports = function ModalGenerator(args, options, config) {
 

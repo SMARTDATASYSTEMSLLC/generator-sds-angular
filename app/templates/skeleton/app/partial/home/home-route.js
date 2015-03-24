@@ -2,14 +2,27 @@
     'use strict';
 
     angular.module('<%= _.camelize(appname) %>')
-        .config(['$routeProvider', function ($routeProvider) {
+    <% if (!uirouter) { %>
+        .config(function ($routeProvider) {
             $routeProvider
                 .when('/home', {
                     templateUrl: 'partial/home/home.html',
                     controller: 'HomeCtrl',
                     controllerAs: "vm",
-                    title: ''
+                    title: 'home'
                 });
-        }]);
+        });
+    <% } %><% if (uirouter) { %>
+        .run(function ($router) {
+
+            $router.config([
+                {
+                    path: '/home',
+                    component: 'home',
+                    title: 'home'
+                }
+            ]);
+        });
+    <% } %>
 
 })();
