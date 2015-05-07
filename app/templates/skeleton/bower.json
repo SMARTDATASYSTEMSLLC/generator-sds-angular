@@ -1,9 +1,9 @@
 {
     "name": "<%= _.slugify(appname) %>",
-    "version": "0.0.0",
-    "main": "app/index.html",
-    "appPath": "app",
-    "distPath": "dist",
+    "version": "1.0.0",
+    "main": "<%= appdir %>/index.html",
+    "appPath": "<%= appdir %>",
+    "distPath": "<%= distdir %>",
     "ignore": [
         "**/.*",
         "node_modules",
@@ -14,6 +14,9 @@
           print('"angular-router": "angular/router",');
         } else {
           print('"angular-route": "~1",');
+        } %>
+        <% if (hasAuth){
+          print('"angular-jwt": "~0.0.7",');
         } %>
         "lodash": "~3",
         "bootstrap": "~3",

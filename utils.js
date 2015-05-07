@@ -42,6 +42,9 @@ exports.addToFile = function(filename,lineToAdd,beforeMarker){
 };
 
 exports.processTemplates = function(name,dir,type,that,defaultDir,configName,module){
+    var styleType = that.config.get("cssExt");
+    console.log('styletype', styleType);
+
     if (!defaultDir) {
         defaultDir = 'templates'
     }
@@ -60,6 +63,12 @@ exports.processTemplates = function(name,dir,type,that,defaultDir,configName,mod
         .each(function(template){
             var customTemplateName = template.replace(type,name);
             var templateFile = path.join(templateDirectory,template);
+
+            // Handle renaming less/sass/css
+            if (styleType && customTemplateName.slice(-5) === '.less'){
+                customTemplateName = customTemplateName.replace('.less', styleType);
+            }
+
             //create the file
             that.template(templateFile,path.join(dir,customTemplateName));
             //inject the file reference into index.html/app.less/etc as appropriate
@@ -284,6 +293,10 @@ exports.getNameArg = function(that,args){
 
 exports.getCleanPath = function (p, file){
     return path.join(p,file).replace(/\\/g,'/').replace(appPath + '/', '');
+};
+
+exports.getCleanRoute = function (p, that){
+    return path.join(p, '/').replace(/\\/g,'/').replace(appPath + '/' + that.config.get('partialDirectory') , '');
 };
 
 exports.addNamePrompt = function(that,prompts,type){

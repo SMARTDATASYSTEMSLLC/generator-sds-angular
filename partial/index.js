@@ -16,10 +16,24 @@ var PartialGenerator = module.exports = function PartialGenerator(args, options,
     sdsUtils.getNameArg(this,args);
 
     yeoman.generators.Base.apply(this, arguments);
-
 };
 
 util.inherits(PartialGenerator, yeoman.generators.Base);
+
+PartialGenerator.prototype.askForPath = function askForPath(){
+    var cb = this.async();
+
+    var prompts = [];
+
+    sdsUtils.addNamePrompt(this,prompts,'partial');
+
+    this.prompt(prompts, function (props) {
+        if (props.name) {
+            this.name = props.name;
+        }
+        sdsUtils.askForModuleAndDir('partial',this,true,cb);
+    }.bind(this));
+};
 
 PartialGenerator.prototype.askFor = function askFor() {
     var cb = this.async();
@@ -27,21 +41,17 @@ PartialGenerator.prototype.askFor = function askFor() {
     var prompts = [
         {
             name: 'route',
-            message: 'Enter your route url (i.e. /mypartial/:id).  If you want /, leave this empty.'
+            message: 'Enter your route url (i.e. /mypartial/:id).',
+            default:sdsUtils.getCleanRoute(this.dir, this)
         }
     ];
 
-    sdsUtils.addNamePrompt(this,prompts,'partial');
-
     this.prompt(prompts, function (props) {
-        if (props.name){
-            this.name = props.name;
-        }
         if (props.route[0] !== '/'){
             props.route = '/' + props.route;
         }
         this.route = url.resolve('',props.route);
-        sdsUtils.askForModuleAndDir('partial',this,true,cb);
+        cb();
     }.bind(this));
 };
 

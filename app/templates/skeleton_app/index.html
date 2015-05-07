@@ -55,15 +55,21 @@
     <script src="partial/home/home.js"></script>
     <script src="partial/about/about-route.js"></script>
     <script src="partial/about/about.js"></script>
+    <% if (hasAuth) { %>
+    <script src="partial/login/login-route.js"></script>
+    <script src="partial/login/login.js"></script>
+    <% } %>
     <!-- Add Partials Above -->
     <!-- Add Modals Above -->
     <!-- Add Directives Above -->
-    <!-- Add Services Above -->
+    <script src="service/constants/constants.js"></script>
+    <script src="service/progress-loader/progress-loader.js"></script>
     <% if (hasAuth) { %>
-    <script src="service/authentication/authHooks.js"></script>
-    <script src="service/authentication/authService.js"></script>
-    <script src="service/authentication/authInterceptorService.js"></script>
+    <script src="service/authentication/auth-hooks.js"></script>
+    <script src="service/authentication/auth-service.js"></script>
+    <script src="service/authentication/auth-interceptor-service.js"></script>
     <% } %>
+    <!-- Add Services Above -->
     <!-- Add Filters Above -->
     <!-- Add Javascript Above -->
 <!-- endbuild -->

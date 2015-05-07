@@ -4,8 +4,10 @@
         'ui.bootstrap',
         'ui.utils',
         '<%= routerModuleName %>',
-        'ngAnimate',
-        'LocalStorageModule'
+        <% if (hasAuth) { %>
+        'angular-jwt',
+        <% } %>
+        'ngAnimate'
     ]);
     <% if (!uirouter) { %>
     angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {

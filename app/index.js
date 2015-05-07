@@ -3,6 +3,7 @@ var util = require('util');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var sdsUtils = require('../utils.js');
+var mkdirp = require('mkdirp');
 
 var SdsAngularGenerator = module.exports = function SdsAngularGenerator(args, options, config) {
     yeoman.generators.Base.apply(this, arguments);
@@ -62,6 +63,25 @@ SdsAngularGenerator.prototype.askFor = function askFor() {
     }.bind(this));
 };
 
+SdsAngularGenerator.prototype.askForAppPath = function askFor() {
+    var cb = this.async();
+
+    var prompts = [{
+        name: 'appdir',
+        message: 'Where do you want to put the app folder?',
+        default: 'app'
+    }];
+
+    this.prompt(prompts, function (props) {
+        this.appdir = props.appdir;
+        var dist = props.appdir.split('/');
+        dist.pop();
+        dist.push('dist');
+        this.distdir = dist.join('/');
+        cb();
+    }.bind(this));
+};
+
 SdsAngularGenerator.prototype.askForBootswatch = function askFor() {
     var cb = this.async();
     var themes = [
@@ -80,7 +100,7 @@ SdsAngularGenerator.prototype.askForBootswatch = function askFor() {
     }];
 
     this.prompt(prompts, function (props) {
-        if (props.bootswatch) {
+        if (props.bootswatch !== 'None') {
             this.bootswatch = props.bootswatch;
         }
         cb();
@@ -138,8 +158,14 @@ SdsAngularGenerator.prototype.askForAuth = function askFor() {
 };
 
 SdsAngularGenerator.prototype.app = function app() {
+    mkdirp.sync('./' + this.appdir);
+    mkdirp.sync('./' + this.distdir);
+
     this.directory('skeleton/','./');
+    this.directory('skeleton_app/','./' + this.appdir);
     if (this.hasAuth){
-        this.directory('auth/','./app/');
+        this.directory('auth/','./' + this.appdir);
     }
+
+    //move app dir to correct location
 };

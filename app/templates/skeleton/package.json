@@ -1,6 +1,6 @@
 {
     "name": "<%= _.camelize(appname) %>",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "devDependencies": {
         "autoprefixer": "^4.0.0",
         "grunt": "~0.4",
