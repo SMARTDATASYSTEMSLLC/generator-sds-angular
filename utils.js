@@ -5,7 +5,7 @@ var chalk = require('chalk');
 _.str = require('underscore.string');
 _.mixin(_.str.exports());
 var ngParseModule = require('ng-parse-module');
-var appExists = fs.existsSync('./.yo-rc.json');
+var appExists = fs.existsSync('./.yo-rc.json') && fs.existsSync('./bower.json');
 var appPath = (appExists && JSON.parse(fs.readFileSync('./bower.json')).appPath) || 'app';
 
 exports.JS_MARKER           = "<!-- Add Javascript Above -->";
@@ -310,4 +310,88 @@ exports.addNamePrompt = function(that,prompts,type){
             }
         });
     }
-}
+};
+
+exports.dependencies = function (that){
+    that.npmInstall([
+        "autoprefixer@^4.0.0",
+        "grunt@~0.4",
+        "grunt-angular-templates@~0.5",
+        "grunt-auto-install@^0.2.2",
+        "grunt-autoprefixer@^2.0.0",
+        "grunt-browser-output@0.1.0",
+        "grunt-concurrent@^1.0.0",
+        "grunt-connect-proxy@^0.1.11",
+        "grunt-contrib-clean@~0.5",
+        "grunt-contrib-concat@~0.3",
+        "grunt-contrib-connect@~0.6",
+        "grunt-contrib-copy@~0.5",
+        "grunt-contrib-cssmin@~0.7",
+        "grunt-contrib-htmlmin@~0.1",
+        "grunt-contrib-jshint@~0.10",
+        "grunt-contrib-less@~0.8",
+        "grunt-contrib-uglify@~0.6",
+        "grunt-contrib-watch@~0.6",
+        "grunt-dom-munger@~3.4",
+        "grunt-filerev@^2.1.2",
+        "grunt-google-cdn@^0.4.3",
+        "grunt-karma@~0.8.3",
+        "grunt-ng-annotate@~0.5",
+        "grunt-usemin@^2.6.2",
+        "jldevries/grunt-usemin-list",
+        "grunt-wiredep@~1.9",
+        "jshint-stylish@^1.0.0",
+        "karma@~0.12.6",
+
+        "load-grunt-tasks@~0.2",
+        "lodash@^2.4.1",
+        "time-grunt@^1.0.0",
+        "zeparser@0.0.7"
+    ], { 'saveDev': true }, function (){
+        that.npmInstall(["karma-chrome-launcher@~0.1.3",
+            "karma-cli@0.0.4",
+            "karma-firefox-launcher@~0.1.3",
+            "karma-jasmine@~0.1.5",
+            "karma-mocha-reporter@~0.2.5",
+            "karma-phantomjs-launcher@~0.1.4"
+        ], { 'saveDev': true });
+
+    });
+    //
+    //that.bowerInstall([
+    //        "angular#~1.4",
+    //        "angular-animate#~1.4",
+    //        "angular-resource#~1.4",
+    //        "angular-messages#~1.4",
+    //        "angular-cookies#~1.4",
+    //        "angular-mocks#~1.4",
+    //        "angular-sanitize#~1.4",
+    //        "angular-ui-utils#~0.1",
+    //        "angular-bootstrap#~0.11",
+    //        "moment#~2",
+    //        "font-awesome#~4",
+    //        "blockui#*",
+    //        "lodash#~3",
+    //        "bootstrap#~3"
+    //    ], {save: true}
+    //);
+    //
+    //if (that.uirouter){
+    //    that.bowerInstall("angular/router", {save: true});
+    //}else{
+    //    that.bowerInstall("angular-route#~1", {save: true});
+    //}
+    //
+    //if(that.hasAuth){
+    //    that.bowerInstall("angular-jwt#~0.0.7", {save: true});
+    //}
+    //
+    //if(that.bootswatch){
+    //    that.bowerInstall("bootswatch#~3", {save: true});
+    //}
+    //
+    //if(that.adminlte){
+    //    that.bowerInstall("admin-lte#~2", {save: true});
+    //}
+
+};

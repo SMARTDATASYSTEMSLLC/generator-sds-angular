@@ -85,7 +85,7 @@ SdsAngularGenerator.prototype.askForAppPath = function askFor() {
 SdsAngularGenerator.prototype.askForBootswatch = function askFor() {
     var cb = this.async();
     var themes = [
-        'None',
+        'None', 'admin-lte',
         'amelia', 'cerulean', 'cosmo', 'cyborg', 'darkly', 'flatly',
         'fonts', 'journal', 'lumen', 'paper', 'readable', 'sandstone',
         'simplex', 'slate', 'spacelab', 'superhero', 'united', 'yeti'
@@ -94,13 +94,15 @@ SdsAngularGenerator.prototype.askForBootswatch = function askFor() {
     var prompts = [{
         name: 'bootswatch',
         type: 'list',
-        message: 'Which bootswatch theme would you like to include?',
+        message: 'Which theme would you like to include?',
         default: 0,
         choices: themes
     }];
 
     this.prompt(prompts, function (props) {
-        if (props.bootswatch !== 'None') {
+        if (props.bootswatch === 'admin-lte'){
+            this.adminlte = true;
+        }else if (props.bootswatch !== 'None') {
             this.bootswatch = props.bootswatch;
         }
         cb();
@@ -168,4 +170,9 @@ SdsAngularGenerator.prototype.app = function app() {
     }
 
     //move app dir to correct location
+};
+
+SdsAngularGenerator.prototype.afterApp = function app(){
+
+    sdsUtils.dependencies(this);
 };
