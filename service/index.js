@@ -12,7 +12,7 @@ module.exports = generators.Base.extend({
 
         sdsUtils.getNameArg(this, args);
     },
-    askFor() {
+    askFor: function() {
         var cb = this.async();
         var prompts = [];
 
@@ -26,7 +26,7 @@ module.exports = generators.Base.extend({
         }.bind(this));
 
     },
-    files() {
+    files: function() {
         sdsUtils.copyTpl('service', 'service.js',     this.name + '.js', this);
         sdsUtils.copyTpl('service', 'service-spec.js',this.name + '-spec.js', this);
     }

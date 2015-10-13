@@ -15,7 +15,7 @@ module.exports = generators.Base.extend({
 
         sdsUtils.getNameArg(this, args);
     },
-    askFor() {
+    askFor: function() {
         var cb = this.async();
 
         var prompts = [];
@@ -30,7 +30,7 @@ module.exports = generators.Base.extend({
         }.bind(this));
 
     },
-    files() {
+    files: function() {
 
         this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
 

@@ -23,7 +23,6 @@ module.exports = generators.Base.extend({
         sdsUtils.addNamePrompt(this, prompts, 'directive');
 
         this.prompt(prompts, function (props) {
-            console.log(props, this.name);
             if (props.name) {
                 this.name = props.name;
             }
