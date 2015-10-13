@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="<%= _.camelize(appname) %>">
+<html ng-app="<%= lodash.camelCase(appname) %>">
 <head>
   <title ng-bind="title"></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#">
-                        <%= _.camelize(appname) %>
+                        <%= lodash.camelCase(appname) %>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" ng-controller="NavMenuCtrl as vm">
@@ -38,7 +38,7 @@
 
 	<footer class="footer navbar-fixed-bottom">
         <div class="container-fluid">
-            <p class="text-muted">&#0169 2015 <%= _.camelize(appname) %></p>
+            <p class="text-muted">&#0169 2015 <%= lodash.camelCase(appname) %></p>
         </div>
     </footer>
 </div>

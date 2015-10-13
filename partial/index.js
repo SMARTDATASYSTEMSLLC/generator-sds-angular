@@ -1,75 +1,64 @@
 'use strict';
-var util = require('util');
-var yeoman = require('yeoman-generator');
-var path = require('path');
-var fs = require('fs');
+var generators = require('yeoman-generator');
 var sdsUtils = require('../utils.js');
-var _ = require('underscore');
+var lodash = require('lodash');
 var chalk = require('chalk');
 var url = require('url');
 
-_.str = require('underscore.string');
-_.mixin(_.str.exports());
+module.exports = generators.Base.extend({
+    constructor: function (args) {
+        generators.Base.apply(this, arguments);
+        this.lodash = lodash;
 
-var PartialGenerator = module.exports = function PartialGenerator(args, options, config) {
+        sdsUtils.getNameArg(this, args);
+    },
+    askForPath: function(){
+        var cb = this.async();
 
-    sdsUtils.getNameArg(this,args);
+        var prompts = [];
 
-    yeoman.generators.Base.apply(this, arguments);
-};
+        sdsUtils.addNamePrompt(this,prompts,'partial');
 
-util.inherits(PartialGenerator, yeoman.generators.Base);
+        this.prompt(prompts, function (props) {
+            if (props.name) {
+                this.name = props.name;
+            }
+            sdsUtils.askForModuleAndDir('partial',this,true,cb);
+        }.bind(this));
+    },
+    askFor: function () {
+        var cb = this.async();
 
-PartialGenerator.prototype.askForPath = function askForPath(){
-    var cb = this.async();
+        var prompts = [
+            {
+                name: 'route',
+                message: 'Enter your route url (i.e. /mypartial/:id).',
+                default:sdsUtils.getCleanRoute(this.dir, this)
+            }
+        ];
 
-    var prompts = [];
+        this.prompt(prompts, function (props) {
+            if (props.route[0] !== '/'){
+                props.route = '/' + props.route;
+            }
+            this.route = url.resolve('',props.route);
+            cb();
+        }.bind(this));
+    },
+    files: function() {
+        this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
+        this.uirouter = this.config.get('uirouter');
 
-    sdsUtils.addNamePrompt(this,prompts,'partial');
+        if (this.route && this.route.length > 0) {
+            this.routeUrl = sdsUtils.getCleanPath(this.dir, this.name + '.html');
 
-    this.prompt(prompts, function (props) {
-        if (props.name) {
-            this.name = props.name;
         }
-        sdsUtils.askForModuleAndDir('partial',this,true,cb);
-    }.bind(this));
-};
 
-PartialGenerator.prototype.askFor = function askFor() {
-    var cb = this.async();
-
-    var prompts = [
-        {
-            name: 'route',
-            message: 'Enter your route url (i.e. /mypartial/:id).',
-            default:sdsUtils.getCleanRoute(this.dir, this)
-        }
-    ];
-
-    this.prompt(prompts, function (props) {
-        if (props.route[0] !== '/'){
-            props.route = '/' + props.route;
-        }
-        this.route = url.resolve('',props.route);
-        cb();
-    }.bind(this));
-};
-
-PartialGenerator.prototype.files = function files() {
-    this.ctrlname = _.camelize(_.classify(this.name)) + 'Ctrl';
-    this.uirouter = this.config.get('uirouter');
-
-    if (this.route && this.route.length > 0) {
-        this.routeUrl = sdsUtils.getCleanPath(this.dir, this.name + '.html');
-
+        var styleExt = this.config.get("cssExt");
+        sdsUtils.copyTpl('partial', 'partial.html',    this.name + '.html', this);
+        sdsUtils.copyTpl('partial', 'partial.js',      this.name + '.js', this);
+        sdsUtils.copyTpl('partial', 'partial.less',    this.name + '.' + styleExt, this);
+        sdsUtils.copyTpl('partial', 'partial-route.js',this.name + '-route.js', this);
+        sdsUtils.copyTpl('partial', 'partial-spec.js', this.name + '-spec.js', this);
     }
-
-    sdsUtils.processTemplates(this.name,this.dir,'partial',this,null,null,this.module);
-
-
-    //if (this.route && this.route.length > 0){
-    //    var partialUrl = this.dir + this.name + '.html';
-    //    sdsUtils.injectRoute(this.module.file,this.config.get('uirouter'),this.name,this.route,partialUrl,this);
-    //}
-
-};
+});

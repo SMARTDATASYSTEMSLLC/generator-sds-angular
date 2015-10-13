@@ -56,6 +56,6 @@
         return authInterceptorServiceFactory;
     }
 
-    angular.module('<%= _.camelize(appname) %>').factory('authInterceptorService',authInterceptorService);
+    angular.module('<%= lodash.camelCase(appname) %>').factory('authInterceptorService',authInterceptorService);
 
 })();

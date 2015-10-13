@@ -4,6 +4,6 @@
         var vm = this;
     }
 
-    angular.module('<%= _.camelize(appname) %>').controller('HomeCtrl', HomeCtrl);
+    angular.module('<%= lodash.camelCase(appname) %>').controller('HomeCtrl', HomeCtrl);
 
 })();

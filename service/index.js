@@ -1,43 +1,33 @@
 'use strict';
-var util = require('util');
-var yeoman = require('yeoman-generator');
-var path = require('path');
+var generators = require('yeoman-generator');
 var sdsUtils = require('../utils.js');
 var chalk = require('chalk');
-var _ = require('underscore');
-var fs = require('fs');
+var lodash = require('lodash');
 
-_.str = require('underscore.string');
-_.mixin(_.str.exports());
 
-var ServiceGenerator = module.exports = function ServiceGenerator(args, options, config) {
+module.exports = generators.Base.extend({
+    constructor: function (args) {
+        generators.Base.apply(this, arguments);
+        this.lodash = lodash;
 
-    sdsUtils.getNameArg(this,args);
+        sdsUtils.getNameArg(this, args);
+    },
+    askFor() {
+        var cb = this.async();
+        var prompts = [];
 
-	yeoman.generators.Base.apply(this, arguments);
+        sdsUtils.addNamePrompt(this,prompts,'service');
 
-};
+        this.prompt(prompts, function (props) {
+            if (props.name){
+                this.name = props.name;
+            }
+            sdsUtils.askForModuleAndDir('service',this,true,cb);
+        }.bind(this));
 
-util.inherits(ServiceGenerator, yeoman.generators.Base);
-
-ServiceGenerator.prototype.askFor = function askFor() {
-    var cb = this.async();
-
-    var prompts = [];
-
-    sdsUtils.addNamePrompt(this,prompts,'service');
-
-    this.prompt(prompts, function (props) {
-        if (props.name){
-            this.name = props.name;
-        }
-        sdsUtils.askForModuleAndDir('service',this,true,cb);
-    }.bind(this));
-
-};
-
-ServiceGenerator.prototype.files = function files() {
-
-    sdsUtils.processTemplates(this.name,this.dir,'service',this,null,null,this.module);
-
-};
+    },
+    files() {
+        sdsUtils.copyTpl('service', 'service.js',     this.name + '.js', this);
+        sdsUtils.copyTpl('service', 'service-spec.js',this.name + '-spec.js', this);
+    }
+});

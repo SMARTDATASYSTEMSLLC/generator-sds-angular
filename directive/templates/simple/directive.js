@@ -1,6 +1,6 @@
 (function () {
     'use strict';
-    function <%= _.camelize(name) %> (){
+    function <%= lodash.camelCase(name) %> (){
         return {
             restrict: 'A',
             link: function (scope, element, attrs, fn) {
@@ -10,5 +10,5 @@
         };
     }
 
-    angular.module('<%= appname %>').directive('<%= _.camelize(name) %>',<%= _.camelize(name) %>);
+    angular.module('<%= appname %>').directive('<%= lodash.camelCase(name) %>',<%= lodash.camelCase(name) %>);
 })();

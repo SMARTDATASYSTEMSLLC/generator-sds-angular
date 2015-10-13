@@ -1,5 +1,5 @@
 {
-    "name": "<%= _.slugify(appname) %>",
+    "name": "<%= lodash.camelCase(appname) %>",
     "version": "1.0.0",
     "main": "<%= appdir %>/index.html",
     "appPath": "<%= appdir %>",
@@ -10,34 +10,7 @@
         "bower_components"
     ],
     "dependencies": {
-        <% if(uirouter) {
-          print('"angular-router": "angular/router",');
-        } else {
-          print('"angular-route": "~1",');
-        } %>
-        <% if (hasAuth){
-          print('"angular-jwt": "~0.0.7",');
-        } %>
-        "lodash": "~3",
-        "bootstrap": "~3",
-        <% if (bootswatch){
-            print('"bootswatch": "~3",');
-        } %>
-        <% if (adminlte){
-            print('"admin-lte": "~2",');
-        } %>
-        "angular": "~1.4",
-        "angular-animate": "~1.4",
-        "angular-resource": "~1.4",
-        "angular-messages": "~1.4",
-        "angular-cookies": "~1.4",
-        "angular-mocks": "~1.4",
-        "angular-sanitize": "~1.4",
-        "angular-ui-utils": "~0.1",
-        "angular-bootstrap": "~0.11",
-        "moment": "~2",
-        "font-awesome": "~4",
-        "blockui": "*"
+
     },
     "overrides": {
         "angular-bootstrap": {
@@ -47,10 +20,7 @@
             "main": "ui-bootstrap-tpls.js"
         },
         "bootstrap": {
-            "main": [
-                "js/affix.js",
-                "js/tooltip.js"
-            ]
+            "main": []
         },
         "angular-toggle-switch": {
             "main": [
@@ -60,13 +30,42 @@
         },
         "admin-lte": {
             "main": [
-                "dist/js/app.js",
-                "build/less/AdminLTE.less"
+            "build/less/core.less",
+            "build/less/variables.less",
+            "build/less/mixins.less",
+            "build/less/header.less",
+            "build/less/sidebar.less",
+            "build/less/sidebar-mini.less",
+            "build/less/control-sidebar.less",
+            "build/less/dropdown.less",
+            "build/less/forms.less",
+            "build/less/progress-bars.less",
+            "build/less/small-box.less",
+            "build/less/boxes.less",
+            "build/less/info-box.less",
+            "build/less/timeline.less",
+            "build/less/buttons.less",
+            "build/less/callout.less",
+            "build/less/alerts.less",
+            "build/less/navs.less",
+            "build/less/products.less",
+            "build/less/table.less",
+            "build/less/labels.less",
+            "build/less/direct-chat.less",
+            "build/less/users-list.less",
+            "build/less/carousel.less",
+            "build/less/modal.less",
+            "build/less/mailbox.less",
+            "build/less/lockscreen.less",
+            "build/less/login_and_register.less",
+            "build/less/404_500_errors.less",
+            "build/less/invoice.less",
+            "build/less/bootstrap-social.less",
+            "build/less/fullcalendar.less",
+            "build/less/select2.less",
+            "build/less/miscellaneous.less",
+            "build/less/print.less"
             ]
         }
-    },
-    "resolutions": {
-        "angular": "~1.4",
-        "jquery": ">2.1.0"
     }
 }

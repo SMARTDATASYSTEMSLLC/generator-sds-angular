@@ -1,4 +1,4 @@
-describe('<%= _.camelize(name) %>', function() {
+describe('<%= lodash.camelCase(name) %>', function() {
     'use strict';
     beforeEach(module('<%= appname %>'));
 

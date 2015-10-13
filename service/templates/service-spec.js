@@ -1,10 +1,10 @@
-describe('<%= _.camelize(name) %>', function() {
+describe('<%= lodash.camelCase(name) %>', function() {
     'use strict';
   beforeEach(module('<%= appname %>'));
 
-  it('should ...', inject(function(<%= _.camelize(name) %>) {
+  it('should ...', inject(function(<%= lodash.camelCase(name) %>) {
 
-	//expect(<%= _.camelize(name) %>.doSomething()).toEqual('something');
+	//expect(<%= lodash.camelCase(name) %>.doSomething()).toEqual('something');
 
   }));
 

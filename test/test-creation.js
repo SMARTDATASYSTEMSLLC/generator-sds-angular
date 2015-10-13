@@ -12,7 +12,7 @@ describe('cg-angular generator', function () {
         return done(err);
       }
 
-      this.app = helpers.createGenerator('cgangular:app', [
+      this.app = helpers.createGenerator('sds-angular:app', [
         '../../app'
       ]);
       done();

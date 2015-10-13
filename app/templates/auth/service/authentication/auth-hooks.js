@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('<%= _.camelize(appname) %>').config(function($httpProvider) {
+    angular.module('<%= lodash.camelCase(appname) %>').config(function($httpProvider) {
         $httpProvider.interceptors.push('authInterceptorService');
 
     })

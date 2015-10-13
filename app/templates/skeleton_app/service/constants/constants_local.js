@@ -1,6 +1,6 @@
 (function (){
     'use strict';
-    angular.module('<%= _.camelize(appname) %>')
+    angular.module('<%= lodash.camelCase(appname) %>')
         .constant("globalConstants", {
             environment: 'local',
             apiServiceBaseUri: "http://localhost",

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('<%= _.camelize(appname) %>')
+    angular.module('<%= lodash.camelCase(appname) %>')
     <% if (!uirouter) { %>
         .config(function ($routeProvider) {
             $routeProvider

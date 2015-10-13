@@ -1,13 +1,13 @@
 (function (){
     'use strict';
-    angular.module('<%= _.camelize(name) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate']);
-    <% if (!uirouter) { %>
-    angular.module('<%= _.camelize(name) %>').config(function($routeProvider) {
+    angular.module('<%= lodash.camelCase(name) %>', ['ui.bootstrap','ui.utils','<%= routerModuleName %>','ngAnimate']);
+    //<% if (!uirouter) { %>
+    angular.module('<%= lodash.camelCase(name) %>').config(function($routeProvider) {
 
     });
-    <% } %><% if (uirouter) { %>
-    angular.module('<%= _.camelize(name) %>').config(function($stateProvider) {
+    //<% } %><% if (uirouter) { %>
+    angular.module('<%= lodash.camelCase(name) %>').config(function($stateProvider) {
 
     });
-    <% } %>
+    //<% } %>
 })();

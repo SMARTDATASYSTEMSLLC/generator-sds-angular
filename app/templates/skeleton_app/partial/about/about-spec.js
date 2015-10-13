@@ -1,6 +1,6 @@
 describe('AboutCtrl', function() {
     'use strict';
-	beforeEach(module('<%= _.camelize(appname) %>'));
+	beforeEach(module('<%= lodash.camelCase(appname) %>'));
 
 	var scope,ctrl;
 

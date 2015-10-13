@@ -1,8 +1,8 @@
 (function () {
     'use strict';
 
+    //<% if (!uirouter) { %>
     angular.module('<%= appname %>')
-    <% if (!uirouter) { %>
         .config(['$routeProvider', function ($routeProvider) {
             $routeProvider
                 .when('<%= route %>', {
@@ -12,7 +12,8 @@
                     title: '<%= name %>'
                 });
         }]);
-    <% } %><% if (uirouter) { %>
+    //<% } %><% if (uirouter) { %>
+    angular.module('<%= appname %>')
         .run(function ($router) {
 
             $router.config([
@@ -23,5 +24,5 @@
                 }
             ]);
         });
-    <% } %>
+    //<% } %>
 })();

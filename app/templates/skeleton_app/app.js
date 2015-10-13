@@ -1,22 +1,22 @@
 (function (){
     'use strict';
-    angular.module('<%= _.camelize(appname) %>', [
+    angular.module('<%= lodash.camelCase(appname) %>', [
         'ui.bootstrap',
         'ui.utils',
         '<%= routerModuleName %>',
-        <% if (hasAuth) { %>
+        //<% if (hasAuth) { %>
         'angular-jwt',
-        <% } %>
+        //<% } %>
         'ngAnimate'
     ]);
-    <% if (!uirouter) { %>
-    angular.module('<%= _.camelize(appname) %>').config(function($routeProvider) {
+    //<% if (!uirouter) { %>
+    angular.module('<%= lodash.camelCase(appname) %>').config(function($routeProvider) {
 
         $routeProvider.otherwise({redirectTo:'/'});
 
     });
-    <% } %><% if (uirouter) { %>
-    angular.module('<%= _.camelize(appname) %>').config(function( $componentLoaderProvider) {
+    //<% } %><% if (uirouter) { %>
+    angular.module('<%= lodash.camelCase(appname) %>').config(function( $componentLoaderProvider) {
 
         $componentLoaderProvider.setComponentFromCtrlMapping(function (name){
             return name[0].toLowerCase() + name.substr(1, name.length - 5);
@@ -31,8 +31,8 @@
         });
 
     });
-    <% } %>
-    angular.module('<%= _.camelize(appname) %>').run(function($rootScope, $location, progressLoader) {
+    //<% } %>
+    angular.module('<%= lodash.camelCase(appname) %>').run(function($rootScope, $location, progressLoader) {
         var lastUrl = $location.path();
 
         $rootScope.safeApply = function(fn) {
@@ -61,7 +61,7 @@
             if (current.$$route && current.$$route.title) {
                 $rootScope.title = current.$$route.title;
             }else{
-                $rootScope.title = '<%= _.camelize(appname) %>';
+                $rootScope.title = '<%= lodash.camelCase(appname) %>';
             }
             progressLoader.endAll();
         });
@@ -82,6 +82,6 @@
         };
     }
 
-    angular.module('<%= _.camelize(appname) %>').controller('NavMenuCtrl', NavMenuCtrl);
+    angular.module('<%= lodash.camelCase(appname) %>').controller('NavMenuCtrl', NavMenuCtrl);
 
 })();

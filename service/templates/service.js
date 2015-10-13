@@ -1,10 +1,10 @@
 (function (){
     'use strict';
-    function <%= _.camelize(name) %>() {
+    function <%= lodash.camelCase(name) %>() {
         var self = {};
         return self;
     }
 
-    angular.module('<%= appname %>').factory('<%= _.camelize(name) %>',<%= _.camelize(name) %>);
+    angular.module('<%= appname %>').factory('<%= lodash.camelCase(name) %>',<%= lodash.camelCase(name) %>);
 
 })();

@@ -141,6 +141,6 @@
 
     }
 
-    angular.module('<%= _.camelize(appname) %>').factory('authService',authService);
+    angular.module('<%= lodash.camelCase(appname) %>').factory('authService',authService);
 
 })();
