@@ -32,7 +32,7 @@ module.exports = generators.Base.extend({
 
     },
     files: function () {
-        var styleExt = this.config.get("cssExt");
+        var styleExt = this.config.get("cssExt").replace('.', '');
         this.htmlPath = sdsUtils.getCleanPath(this.dir, this.name + '.html');
 
         if (this.needpartial) {

@@ -42,6 +42,7 @@ module.exports = generators.Base.extend({
                 }
             };
             this.config.set('inject',inject);
+            this.config.set('cssExt', 'less');
             this.config.save();
 
         });
