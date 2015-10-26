@@ -54,7 +54,7 @@ module.exports = generators.Base.extend({
 
         }
 
-        var styleExt = this.config.get("cssExt").replace('.', '');
+        var styleExt = (this.config.get("cssExt") || 'less').replace('.', '');
         sdsUtils.copyTpl('partial', 'partial.html',    this.name + '.html', this);
         sdsUtils.copyTpl('partial', 'partial.js',      this.name + '.js', this);
         sdsUtils.copyTpl('partial', 'partial.less',    this.name + '.' + styleExt, this);

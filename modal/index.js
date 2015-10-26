@@ -34,7 +34,7 @@ module.exports = generators.Base.extend({
 
         this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
 
-        var styleExt = this.config.get("cssExt").replace('.', '');
+        var styleExt = (this.config.get("cssExt") || 'less').replace('.', '');
         sdsUtils.copyTpl('modal', 'modal.html',   this.name + '.html', this);
         sdsUtils.copyTpl('modal', 'modal.js',     this.name + '.js', this);
         sdsUtils.copyTpl('modal', 'modal.less',   this.name + '.' + styleExt, this);
