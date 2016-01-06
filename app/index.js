@@ -168,6 +168,7 @@ module.exports = generators.Base.extend({
     npm: function(){
         this.npmInstall([
             "autoprefixer",
+            "connect-modrewrite",
             "grunt",
             "grunt-angular-templates",
             "grunt-auto-install",
