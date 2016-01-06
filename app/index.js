@@ -231,7 +231,7 @@ module.exports = generators.Base.extend({
             packages.push("bootswatch")
         }
         if (this.adminlte){
-            packages.push("admin-lte")
+            packages.push("AdminLTE")
         }
 
         this.bowerInstall(packages, {save: true}, function (err){

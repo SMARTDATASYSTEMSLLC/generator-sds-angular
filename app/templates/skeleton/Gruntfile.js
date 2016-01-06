@@ -103,16 +103,22 @@ module.exports = function (grunt) {
             livereload: {
                 options: {
                     middleware: function (connect) {
+                        var modRewrite = require('connect-modrewrite');
                         return [
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             connect.static('.tmp'),
                             connect().use(
                                 '/bower_components',
                                 connect.static('./bower_components')
                             ),
+                            modRewrite(['!\\. /index.html [L]']),
                             connect.static(appConfig.app)
                         ];
                     }
-                }
+                },
+                proxies: [
+
+                ]
             },
             test: {
                 options: {
@@ -146,8 +152,7 @@ module.exports = function (grunt) {
             all: {
                 src: [
                     'Gruntfile.js',
-                    '<%= yeoman.app %>/**/*.js',
-                    '!<%= yeoman.app %>/vendor/**/*.js'
+                    '<%= yeoman.app %>/**/*.js'
                 ]
             }
         },
@@ -211,8 +216,8 @@ module.exports = function (grunt) {
                 separator: ';\n'
             },
             main: {
-                src: ['.tmp/concat/scripts/main.js', '.tmp/templates.js'],
-                dest: '.tmp/concat/scripts/main.js'
+                src: ['.tmp/concat/main.js', '.tmp/templates.js'],
+                dest: '.tmp/concat/main.js'
             }
         },
         // Automatically inject Bower components into the app
@@ -243,7 +248,7 @@ module.exports = function (grunt) {
         filerev: {
             dist: {
                 src: [
-                    '<%= yeoman.dist %>/scripts/{,*/}*.js',
+                    '<%= yeoman.dist %>/{,*/}*.js',
                     '<%= yeoman.dist %>/{,*/}*.css'
                     //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
                     //'<%= yeoman.dist %>/styles/fonts/*'
@@ -303,7 +308,7 @@ module.exports = function (grunt) {
                     conservativeCollapse: true,
                     collapseBooleanAttributes: true,
                     removeCommentsFromCDATA: true,
-                    removeOptionalTags: true
+                    removeOptionalTags: false
                 },
                 files: [{
                     expand: true,
@@ -320,9 +325,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '.tmp/concat/scripts',
+                    cwd: '.tmp/concat',
                     src: ['*.js', '!oldieshim.js'],
-                    dest: '.tmp/concat/scripts'
+                    dest: '.tmp/concat'
                 }]
             }
         },
@@ -431,6 +436,7 @@ module.exports = function (grunt) {
             'concurrent:serve',
             'less',
             'autoprefixer',
+            'configureProxies:livereload',
             'connect:livereload',
             'watch:serve'
 
@@ -443,6 +449,7 @@ module.exports = function (grunt) {
         'clean:server',
         'less',
         'autoprefixer',
+        'configureProxies:livereload',
         'connect:livereload',
         'watch:serve'
 

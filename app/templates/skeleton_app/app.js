@@ -2,7 +2,6 @@
     'use strict';
     angular.module('<%= lodash.camelCase(appname) %>', [
         'ui.bootstrap',
-        'ui.utils',
         '<%= routerModuleName %>',
         //<% if (hasAuth) { %>
         'angular-jwt',
@@ -10,9 +9,11 @@
         'ngAnimate'
     ]);
     //<% if (!uirouter) { %>
-    angular.module('<%= lodash.camelCase(appname) %>').config(function($routeProvider) {
+    angular.module('<%= lodash.camelCase(appname) %>').config(function($routeProvider, $locationProvider) {
 
         $routeProvider.otherwise({redirectTo:'/'});
+
+        $locationProvider.html5Mode(true);
 
     });
     //<% } %><% if (uirouter) { %>
@@ -32,7 +33,7 @@
 
     });
     //<% } %>
-    angular.module('<%= lodash.camelCase(appname) %>').run(function($rootScope, $location, progressLoader) {
+    angular.module('<%= lodash.camelCase(appname) %>').run(function($rootScope, $location) {
         var lastUrl = $location.path();
 
         $rootScope.safeApply = function(fn) {
@@ -46,29 +47,29 @@
             }
         };
 
-        $rootScope.$on('$routeChangeStart', function (event, current) {
-            //this is needed because
-            //1. on $route.reload no 'success' is fired and the spinner never stops
-            //2. clicking, ie. a node menu again, behaves the same as a route reload
-            if (lastUrl !== $location.path()) {
-                progressLoader.start();
-            }
-
-            lastUrl = $location.path();
-        });
-
-        $rootScope.$on('$routeChangeSuccess', function (event, current) {
-            if (current.$$route && current.$$route.title) {
-                $rootScope.title = current.$$route.title;
-            }else{
-                $rootScope.title = '<%= lodash.camelCase(appname) %>';
-            }
-            progressLoader.endAll();
-        });
-
-        $rootScope.$on('$routeChangeError', function(){
-            progressLoader.endAll();
-        });
+        //$rootScope.$on('$routeChangeStart', function (event, current) {
+        //    //this is needed because
+        //    //1. on $route.reload no 'success' is fired and the spinner never stops
+        //    //2. clicking, ie. a node menu again, behaves the same as a route reload
+        //    if (lastUrl !== $location.path()) {
+        //        progressLoader.start();
+        //    }
+        //
+        //    lastUrl = $location.path();
+        //});
+        //
+        //$rootScope.$on('$routeChangeSuccess', function (event, current) {
+        //    if (current.$$route && current.$$route.title) {
+        //        $rootScope.title = current.$$route.title;
+        //    }else{
+        //        $rootScope.title = '<%= lodash.camelCase(appname) %>';
+        //    }
+        //    progressLoader.endAll();
+        //});
+        //
+        //$rootScope.$on('$routeChangeError', function(){
+        //    progressLoader.endAll();
+        //});
 
 
     });

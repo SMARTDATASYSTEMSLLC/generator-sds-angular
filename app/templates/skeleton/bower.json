@@ -28,7 +28,7 @@
                 "angular-toggle-switch.css"
             ]
         },
-        "admin-lte": {
+        "AdminLTE": {
             "main": [
             "build/less/core.less",
             "build/less/variables.less",
