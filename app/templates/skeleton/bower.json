@@ -28,6 +28,45 @@
                 "angular-toggle-switch.css"
             ]
         },
+        "admin-lte": {
+          "main": [
+            "build/less/core.less",
+            "build/less/variables.less",
+            "build/less/mixins.less",
+            "build/less/header.less",
+            "build/less/sidebar.less",
+            "build/less/sidebar-mini.less",
+            "build/less/control-sidebar.less",
+            "build/less/dropdown.less",
+            "build/less/forms.less",
+            "build/less/progress-bars.less",
+            "build/less/small-box.less",
+            "build/less/boxes.less",
+            "build/less/info-box.less",
+            "build/less/timeline.less",
+            "build/less/buttons.less",
+            "build/less/callout.less",
+            "build/less/alerts.less",
+            "build/less/navs.less",
+            "build/less/products.less",
+            "build/less/table.less",
+            "build/less/labels.less",
+            "build/less/direct-chat.less",
+            "build/less/users-list.less",
+            "build/less/carousel.less",
+            "build/less/modal.less",
+            "build/less/mailbox.less",
+            "build/less/lockscreen.less",
+            "build/less/login_and_register.less",
+            "build/less/404_500_errors.less",
+            "build/less/invoice.less",
+            "build/less/bootstrap-social.less",
+            "build/less/fullcalendar.less",
+            "build/less/select2.less",
+            "build/less/miscellaneous.less",
+            "build/less/print.less"
+          ]
+        },
         "AdminLTE": {
             "main": [
             "build/less/core.less",
