@@ -7,30 +7,30 @@ var path = require('path');
 var jsonFile = require('jsonfile');
 var appPath =(jsonFile.readFileSync('./bower.json', {throws:false}) || {appPath:'app'}).appPath;
 
-
-module.exports = generators.Base.extend({
-    constructor: function (args) {
-        generators.Base.apply(this, arguments);
+module.exports =  class SDSAngularGenerator extends generators.Base {
+    constructor() {
+        super(...arguments);
         this.lodash = lodash;
 
-        sdsUtils.getNameArg(this, args);
-    },
-    askFor: function() {
+        sdsUtils.getNameArg(this, arguments[0]);
+    }
+
+    askFor(){
         var cb = this.async();
 
         var prompts = [];
 
         sdsUtils.addNamePrompt(this,prompts,'modal');
 
-        this.prompt(prompts, function (props) {
+        this.prompt(prompts).then(props => {
             if (props.name){
                 this.name = props.name;
             }
             sdsUtils.askForModuleAndDir('modal',this,true,cb);
-        }.bind(this));
-
-    },
-    files: function() {
+        });
+    }
+    
+    files(){
 
         this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
 
@@ -40,7 +40,7 @@ module.exports = generators.Base.extend({
         sdsUtils.copyTpl('modal', 'modal.less',   this.name + '.' + styleExt, this);
         sdsUtils.copyTpl('modal', 'modal-spec.js',this.name + '-spec.js', this);
 
-        setTimeout((function(){
+        setTimeout(() => {
 
             console.log('');
             console.log('  Open this modal by using ' + chalk.bold('angular-ui-bootstrap') + ' module\'s ' + chalk.bold('$modal') + ' service:');
@@ -57,7 +57,7 @@ module.exports = generators.Base.extend({
             console.log('  });');
             console.log('');
 
-        }).bind(this),200);
+        },200);
 
     }
-});
+};

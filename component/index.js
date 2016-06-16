@@ -17,11 +17,11 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
         var prompts = [{
             type: 'confirm',
             name: 'needpartial',
-            message: 'Does this directive need an external html file (i.e. partial)?',
+            message: 'Does this component need an external html file (i.e. partial)?',
             default: true
         }];
 
-        sdsUtils.addNamePrompt(this, prompts, 'directive');
+        sdsUtils.addNamePrompt(this, prompts, 'component');
 
         this.prompt(prompts).then(props => {
             if (props.name) {

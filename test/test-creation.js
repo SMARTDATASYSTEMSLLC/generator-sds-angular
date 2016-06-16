@@ -5,9 +5,9 @@ var path    = require('path');
 var helpers = require('yeoman-generator').test;
 
 
-describe('sds-angular generator', function () {
-  beforeEach(function (done) {
-    helpers.testDirectory(path.join(__dirname, 'temp'), function (err) {
+describe('sds-angular generator', () => {
+  beforeEach((done) => {
+    helpers.testDirectory(path.join(__dirname, 'temp'), (err) => {
       if (err) {
         return done(err);
       }
@@ -16,10 +16,10 @@ describe('sds-angular generator', function () {
         '../../app'
       ]);
       done();
-    }.bind(this));
+    });
   });
 
-  it('creates expected files', function (done) {
+  it('creates expected files', (done) => {
     var expected = [
       // add files you expect to exist here.
       '.jshintrc',
@@ -30,7 +30,7 @@ describe('sds-angular generator', function () {
       'someOption': 'Y'
     });
     this.app.options['skip-install'] = true;
-    this.app.run({}, function () {
+    this.app.run({}, () => {
       helpers.assertFiles(expected);
       done();
     });

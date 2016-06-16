@@ -4,7 +4,13 @@ var _ = require('lodash');
 var chalk = require('chalk');
 var ngParseModule = require('ng-parse-module');
 var jsonFile = require('jsonfile');
-var appPath = (jsonFile.readFileSync('./bower.json', {throws:false}) || {appPath:'app'}).appPath;
+var appPath = 'app';
+try {
+    fs.accessSync('./bower.json', fs.F_OK);
+    appPath = (jsonFile.readFileSync('./bower.json', {throws:false}) || {appPath:'app'}).appPath;
+} catch (e) {
+    var appPath = 'app';
+}
 
 module.exports.JS_MARKER           = "<!-- Add Javascript Above -->";
 module.exports.JS_PARTIAL_MARKER   = "<!-- Add Partials Above -->";
@@ -23,13 +29,13 @@ module.exports.LESS_FILTER_MARKER    = "/* Add Filter LESS Above */";
 module.exports.ROUTE_MARKER = "/* Add New Routes Above */";
 module.exports.STATE_MARKER = "/* Add New States Above */";
 
-module.exports.copyTpl = function (type, tplPath, name, that){
+module.exports.copyTpl = (type, tplPath, name, that) => {
     that.fs.copyTpl(that.templatePath(tplPath), that.destinationPath(that.dir, name), that);
 
     module.exports.inject(that.destinationPath(that.dir, name),that, that.module, type);
 };
 
-module.exports.inject = function(filename,that,mod, type) {
+module.exports.inject = (filename,that,mod, type) => {
     //special case to skip unit tests
     if (_(filename).endsWith('-spec.js') ||
         _(filename).endsWith('_spec.js') ||
@@ -65,7 +71,7 @@ module.exports.inject = function(filename,that,mod, type) {
     }
 };
 
-module.exports.addToFile = function(filename,lineToAdd,beforeMarker){
+module.exports.addToFile = (filename,lineToAdd,beforeMarker) => {
     try {
         var fullPath = path.resolve(process.cwd(),filename);
         var fileSrc = fs.readFileSync(fullPath,'utf8');
@@ -81,7 +87,7 @@ module.exports.addToFile = function(filename,lineToAdd,beforeMarker){
     }
 };
 
-module.exports.getParentModule = function(dir){
+module.exports.getParentModule = (dir) => {
     //starting this dir, find the first module and return parsed results
     if (fs.existsSync(dir)) {
         var files = fs.readdirSync(dir);
@@ -104,7 +110,7 @@ module.exports.getParentModule = function(dir){
     return module.exports.getParentModule(path.join(dir,'..'));
 };
 
-module.exports.askForModule = function(type,that,cb){
+module.exports.askForModule = (type,that,cb) => {
     var modules = that.config.get('modules');
     var mainModule = ngParseModule.parse(appPath + '/app.js');
     mainModule.primary = true;
@@ -127,7 +133,7 @@ module.exports.askForModule = function(type,that,cb){
         }
     ];
 
-    that.prompt(prompts, function (props) {
+    that.prompt(prompts).then(props => {
 
         var i = choices.indexOf(props.module);
 
@@ -140,11 +146,10 @@ module.exports.askForModule = function(type,that,cb){
         }
 
         cb.bind(that)(mod);
-    }.bind(that));
-
+    });
 };
 
-module.exports.askForDir = function(type,that,mod,ownDir,cb){
+module.exports.askForDir = (type,that,mod,ownDir,cb) => {
 
     that.module = mod;
     that.appname = mod.name;
@@ -168,7 +173,7 @@ module.exports.askForDir = function(type,that,mod,ownDir,cb){
             name:'dir',
             message:'Where would you like to create the '+type+' files?',
             default: defaultDir,
-            validate: function(dir){
+            validate: (dir) => {
                 if (!mod.primary) {
                     //ensure dir is in module dir or subdir of it
                     dir = path.resolve(dir);
@@ -181,7 +186,7 @@ module.exports.askForDir = function(type,that,mod,ownDir,cb){
         }
     ];
 
-    var dirPromptCallback = function (props) {
+    var dirPromptCallback = props => {
 
         that.dir = path.join(props.dir,'/');
         var dirToCreate = that.dir;
@@ -194,11 +199,11 @@ module.exports.askForDir = function(type,that,mod,ownDir,cb){
                 name:'isConfirmed',
                 type:'confirm',
                 message:chalk.cyan(dirToCreate) + ' does not exist.  Create it?'
-            }],function(props){
+            }]).then(props => {
                 if (props.isConfirmed){
                     cb();
                 } else {
-                    that.prompt(dirPrompt,dirPromptCallback);
+                    that.prompt(dirPrompt).then(dirPromptCallback);
                 }
             });
         } else if (ownDir && fs.existsSync(that.dir)){
@@ -207,11 +212,11 @@ module.exports.askForDir = function(type,that,mod,ownDir,cb){
                 name:'isConfirmed',
                 type:'confirm',
                 message:chalk.cyan(that.dir) + ' already exists.  Components of this type contain multiple files and are typically put inside directories of their own.  Continue?'
-            }],function(props){
+            }]).then(props => {
                 if (props.isConfirmed){
                     cb();
                 } else {
-                    that.prompt(dirPrompt,dirPromptCallback);
+                    that.prompt(dirPrompt).then(dirPromptCallback);
                 }
             });
         } else {
@@ -220,41 +225,38 @@ module.exports.askForDir = function(type,that,mod,ownDir,cb){
 
     };
 
-    that.prompt(dirPrompt,dirPromptCallback);
+    that.prompt(dirPrompt).then(dirPromptCallback);
 
 };
 
-module.exports.askForModuleAndDir = function(type,that,ownDir,cb) {
+module.exports.askForModuleAndDir = (type,that,ownDir,cb) => {
     that.name = that.name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
-    module.exports.askForModule(type,that,function(mod){
+    module.exports.askForModule(type,that, (mod) => {
         module.exports.askForDir(type,that,mod,ownDir,cb);
     });
 };
 
-module.exports.getNameArg = function(that,args){
+module.exports.getNameArg = (that,args) => {
     if (args.length > 0){
         that.name = args[0];
     }
 };
 
-module.exports.getCleanPath = function (p, file){
+module.exports.getCleanPath = (p, file) => {
     return path.join(p,file).replace(/\\/g,'/').replace(appPath + '/', '');
 };
 
-module.exports.getCleanRoute = function (p, that){
+module.exports.getCleanRoute = (p, that) => {
     return path.join(p, '/').replace(/\\/g,'/').replace(appPath + '/' + that.config.get('partialDirectory') , '');
 };
 
-module.exports.addNamePrompt = function(that,prompts,type){
-
+module.exports.addNamePrompt = (that,prompts,type) => {
     if (!that.name){
         prompts.splice(0,0,{
             name:'name',
             message: 'Enter a name for the ' + type + '.',
-            validate: function(input){
-                return true;
-            }
+            validate: input => true
         });
     }
 };

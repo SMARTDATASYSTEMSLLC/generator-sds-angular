@@ -5,28 +5,30 @@ var lodash = require('lodash');
 var chalk = require('chalk');
 var url = require('url');
 
-module.exports = generators.Base.extend({
-    constructor: function (args) {
-        generators.Base.apply(this, arguments);
+module.exports =  class SDSAngularGenerator extends generators.Base {
+    constructor() {
+        super(...arguments);
         this.lodash = lodash;
 
-        sdsUtils.getNameArg(this, args);
-    },
-    askForPath: function(){
+        sdsUtils.getNameArg(this, arguments[0]);
+    }
+
+    askForPath(){
         var cb = this.async();
 
         var prompts = [];
 
         sdsUtils.addNamePrompt(this,prompts,'partial');
 
-        this.prompt(prompts, function (props) {
+        this.prompt(prompts).then(props => {
             if (props.name) {
                 this.name = props.name;
             }
             sdsUtils.askForModuleAndDir('partial',this,true,cb);
-        }.bind(this));
-    },
-    askFor: function () {
+        });
+    }
+    
+    askFor() {
         var cb = this.async();
 
         var prompts = [
@@ -37,15 +39,16 @@ module.exports = generators.Base.extend({
             }
         ];
 
-        this.prompt(prompts, function (props) {
+        this.prompt(prompts).then(props => {
             if (props.route[0] !== '/'){
                 props.route = '/' + props.route;
             }
             this.route = url.resolve('',props.route);
             cb();
-        }.bind(this));
-    },
-    files: function() {
+        });
+    }
+    
+    files() {
         this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
         this.uirouter = this.config.get('uirouter');
 
@@ -61,4 +64,4 @@ module.exports = generators.Base.extend({
         sdsUtils.copyTpl('partial', 'partial-route.js',this.name + '-route.js', this);
         sdsUtils.copyTpl('partial', 'partial-spec.js', this.name + '-spec.js', this);
     }
-});
+};

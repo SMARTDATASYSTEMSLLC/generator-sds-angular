@@ -7,16 +7,16 @@ var lodash = require('lodash');
 var jsonFile = require('jsonfile');
 var chalk = require('chalk');
 
-module.exports = generators.Base.extend({
-    constructor: function (){
-        generators.Base.apply(this, arguments);
+module.exports =  class SDSAngularGenerator extends generators.Base {
+    constructor() {
+        super(...arguments);
 
-        this.on('end', function () {
-            this.config.set('partialDirectory','partial/');
-            this.config.set('modalDirectory','partial/');
-            this.config.set('directiveDirectory','directive/');
-            this.config.set('filterDirectory','filter/');
-            this.config.set('serviceDirectory','service/');
+        this.on('end', () => {
+            this.config.set('partialDirectory', 'partial/');
+            this.config.set('modalDirectory', 'partial/');
+            this.config.set('directiveDirectory', 'component/');
+            this.config.set('filterDirectory', 'filter/');
+            this.config.set('serviceDirectory', 'service/');
             var inject = {
                 js: {
                     relativeToModule: true,
@@ -41,7 +41,7 @@ module.exports = generators.Base.extend({
                     template: '@import "<%= filename %>";'
                 }
             };
-            this.config.set('inject',inject);
+            this.config.set('inject', inject);
             this.config.set('cssExt', 'less');
             this.config.save();
 
@@ -49,37 +49,40 @@ module.exports = generators.Base.extend({
 
         this.lodash = lodash;
 
-        this.pkg = jsonFile.readFileSync(path.join(__dirname, '../package.json'), {throws:false});
-    },
-    askFor: function () {
+        this.pkg = jsonFile.readFileSync(path.join(__dirname, '../package.json'), {throws: false});
+    }
+
+    askFor() {
         var cb = this.async();
 
         this.prompt({
             name: 'appname',
             message: 'What would you like the angular app/module name to be?',
             default: path.basename(process.cwd())
-        }, function (props) {
+        }).then((props) => {
             this.appname = props.appname;
             cb();
-        }.bind(this));
-    },
-    askForAppPath: function() {
+        });
+    }
+
+    askForAppPath() {
         var cb = this.async();
 
         this.prompt({
             name: 'appdir',
             message: 'Where do you want to put the app folder?',
             default: 'app'
-        }, function (props) {
+        }).then((props) => {
             this.appdir = props.appdir;
             var dist = props.appdir.split('/');
             dist.pop();
             dist.push('dist');
             this.distdir = dist.join('/');
             cb();
-        }.bind(this));
-    },
-    askForBootswatch: function () {
+        });
+    }
+
+    askForBootswatch() {
         var cb = this.async();
         var themes = [
             'None', 'admin-lte',
@@ -94,25 +97,26 @@ module.exports = generators.Base.extend({
             message: 'Which theme would you like to include?',
             default: 0,
             choices: themes
-        }, function (props) {
-            if (props.bootswatch === 'admin-lte'){
+        }).then((props) => {
+            if (props.bootswatch === 'admin-lte') {
                 this.adminlte = true;
-            }else if (props.bootswatch !== 'None') {
+            } else if (props.bootswatch !== 'None') {
                 this.bootswatch = props.bootswatch;
             }
             cb();
-        }.bind(this));
-    },
-    askForUiRouter: function() {
+        });
+    }
+
+    askForUiRouter() {
         var cb = this.async();
 
         this.prompt({
             name: 'router',
-            type:'list',
+            type: 'list',
             message: 'Which router would you like to use?',
             default: 0,
-            choices: ['Standard Angular Router','New Angular Router']
-        }, function (props) {
+            choices: ['Standard Angular Router', 'New Angular Router']
+        }).then((props) => {
             if (props.router === 'New Angular Router') {
                 this.uirouter = true;
 
@@ -124,48 +128,51 @@ module.exports = generators.Base.extend({
                 this.routerModuleName = 'ngRoute';
                 this.routerViewDirective = 'ng-view';
             }
-            this.config.set('uirouter',this.uirouter);
+            this.config.set('uirouter', this.uirouter);
             cb();
-        }.bind(this));
-    },
-    askForAuth: function () {
+        });
+    }
+
+    askForAuth() {
         var cb = this.async();
 
         this.prompt({
             name: 'router',
-            type:'list',
+            type: 'list',
             message: 'Do you want to include an oauth authentication starter?',
             default: 0,
-            choices: ['No','Yes']
-        }, function (props) {
+            choices: ['No', 'Yes']
+        }).then((props) => {
             this.hasAuth = props.router === 'Yes';
-            this.config.set('hasAuth',this.hasAuth);
+            this.config.set('hasAuth', this.hasAuth);
             cb();
-        }.bind(this));
-    },
-    app: function() {
+        });
+    }
+
+    app() {
         var cb = this.async();
         mkdirp.sync('./' + this.appdir);
         mkdirp.sync('./' + this.distdir);
 
-        this.fs.copy   (this.templatePath('skeleton/.bowerrc'),     this.destinationPath('.bowerrc'));
-        this.fs.copy   (this.templatePath('skeleton/.editorconfig'),this.destinationPath('.editorconfig'));
-        this.fs.copy   (this.templatePath('skeleton/.gitignore'),   this.destinationPath('.gitignore'));
-        this.fs.copy   (this.templatePath('skeleton/.jshintrc'),    this.destinationPath('.jshintrc'));
-        this.fs.copy   (this.templatePath('skeleton/.npmignore'),   this.destinationPath('.npmignore'));
-        this.fs.copy   (this.templatePath('skeleton/Gruntfile.js'), this.destinationPath('Gruntfile.js'));
-        this.fs.copyTpl(this.templatePath('skeleton/bower.json'),   this.destinationPath('bower.json'), this);
+        this.fs.copy(this.templatePath('skeleton/.bowerrc'), this.destinationPath('.bowerrc'));
+        this.fs.copy(this.templatePath('skeleton/.editorconfig'), this.destinationPath('.editorconfig'));
+        this.fs.copy(this.templatePath('skeleton/.gitignore'), this.destinationPath('.gitignore'));
+        this.fs.copy(this.templatePath('skeleton/.jshintrc'), this.destinationPath('.jshintrc'));
+        this.fs.copy(this.templatePath('skeleton/.npmignore'), this.destinationPath('.npmignore'));
+        this.fs.copy(this.templatePath('skeleton/Gruntfile.js'), this.destinationPath('Gruntfile.js'));
+        this.fs.copyTpl(this.templatePath('skeleton/bower.json'), this.destinationPath('bower.json'), this);
         this.fs.copyTpl(this.templatePath('skeleton/package.json'), this.destinationPath('package.json'), this);
-        this.fs.copyTpl(this.templatePath('skeleton_app/'),this.destinationPath('./' + this.appdir), this);
-        if (this.hasAuth){
-            this.fs.copyTpl(this.templatePath('auth/'),    this.destinationPath('./' + this.appdir), this);
+        this.fs.copyTpl(this.templatePath('skeleton_app/'), this.destinationPath('./' + this.appdir), this);
+        if (this.hasAuth) {
+            this.fs.copyTpl(this.templatePath('auth/'), this.destinationPath('./' + this.appdir), this);
         }
 
-        //move app dir to correct location
+//move app dir to correct location
 
         this._writeFiles(cb)
-    },
-    npm: function(){
+    }
+
+    npm() {
         this.npmInstall([
             "autoprefixer",
             "connect-modrewrite",
@@ -200,7 +207,7 @@ module.exports = generators.Base.extend({
             "load-grunt-tasks",
             "lodash",
             "time-grunt"
-        ], { 'saveDev': true });
+        ], {'saveDev': true});
 
 
         var packages = [
@@ -219,24 +226,24 @@ module.exports = generators.Base.extend({
             "blockui"
         ];
 
-        if(this.uirouter) {
+        if (this.uirouter) {
             packages.push("angular-router")
         } else {
             packages.push("angular-route")
         }
-        if (this.hasAuth){
+        if (this.hasAuth) {
             packages.push("angular-jwt")
         }
 
-        if (this.bootswatch){
+        if (this.bootswatch) {
             packages.push("bootswatch")
         }
-        if (this.adminlte){
+        if (this.adminlte) {
             packages.push("admin-lte")
         }
 
-        this.bowerInstall(packages, {save: true}, function (err){
-            if(err){
+        this.bowerInstall(packages, {save: true}, (err) => {
+            if (err) {
                 console.log(chalk.red('There was an error running bower!'));
                 console.log(chalk.red('You will need to manually check your dependency versions.'));
                 console.log(chalk.red('To solve this error, please run the following commands:'));
@@ -245,8 +252,8 @@ module.exports = generators.Base.extend({
                 console.log('npm install -g bower');
                 console.log();
                 jsonFile.spaces = 2;
-                var bower= jsonFile.readFileSync(this.destinationPath('bower.json'), {throws:false});
-                bower.dependencies = lodash.reduce(packages, function (r,pkg){
+                var bower = jsonFile.readFileSync(this.destinationPath('bower.json'), {throws: false});
+                bower.dependencies = lodash.reduce(packages, (r, pkg) => {
                     pkg = pkg.split('#');
                     r[pkg[0]] = pkg[1] || '*';
                     return r;
@@ -256,5 +263,4 @@ module.exports = generators.Base.extend({
             }
         });
     }
-});
-
+};

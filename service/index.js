@@ -4,30 +4,30 @@ var sdsUtils = require('../utils.js');
 var chalk = require('chalk');
 var lodash = require('lodash');
 
-
-module.exports = generators.Base.extend({
-    constructor: function (args) {
-        generators.Base.apply(this, arguments);
+module.exports =  class SDSAngularGenerator extends generators.Base {
+    constructor() {
+        super(...arguments);
         this.lodash = lodash;
+        
+        sdsUtils.getNameArg(this, arguments[0]);
+    }
 
-        sdsUtils.getNameArg(this, args);
-    },
-    askFor: function() {
+    askFor() {
         var cb = this.async();
         var prompts = [];
 
         sdsUtils.addNamePrompt(this,prompts,'service');
 
-        this.prompt(prompts, function (props) {
+        this.prompt(prompts).then(props => {
             if (props.name){
                 this.name = props.name;
             }
             sdsUtils.askForModuleAndDir('service',this,true,cb);
-        }.bind(this));
+        });
 
-    },
-    files: function() {
+    }
+    files() {
         sdsUtils.copyTpl('service', 'service.js',     this.name + '.js', this);
         sdsUtils.copyTpl('service', 'service-spec.js',this.name + '-spec.js', this);
     }
-});
+};
