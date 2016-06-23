@@ -421,7 +421,7 @@ module.exports = function (grunt) {
                 }
             },
             build: {
-                tasks: ['clean:dist', 'wiredep', 'ngtemplates'],
+                tasks: ['wiredep', 'ngtemplates'],
                 options: {
                     logConcurrentOutput: true
                 }
@@ -486,6 +486,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'jshint',
+        'clean:dist',
         'concurrent:build',
         'less',
         'autoprefixer',
