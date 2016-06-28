@@ -27,6 +27,8 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
     
     files(){
         sdsUtils.copyTpl('filter', 'filter.js',      this.name + '.js', this);
-        sdsUtils.copyTpl('filter', 'filter-spec.js', this.name + '-spec.js', this);
+        if (this.config.get("hasSpecFiles") !== false) {
+            sdsUtils.copyTpl('filter', 'filter-spec.js', this.name + '-spec.js', this);
+        }
     }
 };

@@ -40,7 +40,9 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
             sdsUtils.copyTpl('directive', 'complex/directive.html',   this.name + '.html', this);
             sdsUtils.copyTpl('directive', 'complex/directive.js',     this.name + '.js', this);
             sdsUtils.copyTpl('directive', 'complex/directive.less',   this.name + '.' + styleExt, this);
-            sdsUtils.copyTpl('directive', 'complex/directive-spec.js',this.name + '-spec.js', this);
+            if (this.config.get("hasSpecFiles") !== false) {
+                sdsUtils.copyTpl('directive', 'complex/directive-spec.js', this.name + '-spec.js', this);
+            }
         }else{
             sdsUtils.copyTpl('directive', 'simple/directive.js',      this.name + '.js', this);
             sdsUtils.copyTpl('directive', 'simple/directive-spec.js', this.name + '-spec.js', this);

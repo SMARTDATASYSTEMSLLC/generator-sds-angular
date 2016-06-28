@@ -62,6 +62,8 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
         sdsUtils.copyTpl('partial', 'partial.js',      this.name + '.js', this);
         sdsUtils.copyTpl('partial', 'partial.less',    this.name + '.' + styleExt, this);
         sdsUtils.copyTpl('partial', 'partial-route.js',this.name + '-route.js', this);
-        sdsUtils.copyTpl('partial', 'partial-spec.js', this.name + '-spec.js', this);
+        if (this.config.get("hasSpecFiles") !== false) {
+            sdsUtils.copyTpl('partial', 'partial-spec.js', this.name + '-spec.js', this);
+        }
     }
 };

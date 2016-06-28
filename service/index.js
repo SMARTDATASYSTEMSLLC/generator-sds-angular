@@ -22,12 +22,15 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
             if (props.name){
                 this.name = props.name;
             }
-            sdsUtils.askForModuleAndDir('service',this,true,cb);
+            var inDirectory = (this.config.get("hasSpecFiles") !== false);
+            sdsUtils.askForModuleAndDir('service',this,inDirectory,cb);
         });
 
     }
     files() {
         sdsUtils.copyTpl('service', 'service.js',     this.name + '.js', this);
-        sdsUtils.copyTpl('service', 'service-spec.js',this.name + '-spec.js', this);
+        if (this.config.get("hasSpecFiles") !== false) {
+            sdsUtils.copyTpl('service', 'service-spec.js', this.name + '-spec.js', this);
+        }
     }
 };

@@ -38,7 +38,9 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
         sdsUtils.copyTpl('modal', 'modal.html',   this.name + '.html', this);
         sdsUtils.copyTpl('modal', 'modal.js',     this.name + '.js', this);
         sdsUtils.copyTpl('modal', 'modal.less',   this.name + '.' + styleExt, this);
-        sdsUtils.copyTpl('modal', 'modal-spec.js',this.name + '-spec.js', this);
+        if (this.config.get("hasSpecFiles") !== false) {
+            sdsUtils.copyTpl('modal', 'modal-spec.js', this.name + '-spec.js', this);
+        }
 
         setTimeout(() => {
 
