@@ -32,7 +32,7 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
     
     files(){
 
-        this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
+        this.ctrlname = lodash.upperFirst(lodash.camelCase(this.name)) + 'Ctrl';
 
         var styleExt = (this.config.get("cssExt") || 'less').replace('.', '');
         sdsUtils.copyTpl('modal', 'modal.html',   this.name + '.html', this);

@@ -49,7 +49,7 @@ module.exports =  class SDSAngularGenerator extends generators.Base {
     }
     
     files() {
-        this.ctrlname = lodash.capitalize(lodash.camelCase(this.name)) + 'Ctrl';
+        this.ctrlname = lodash.upperFirst(lodash.camelCase(this.name)) + 'Ctrl';
         this.uirouter = this.config.get('uirouter');
 
         if (this.route && this.route.length > 0) {
