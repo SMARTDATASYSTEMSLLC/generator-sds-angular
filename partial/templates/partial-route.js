@@ -3,7 +3,7 @@
 
     //<% if (!uirouter) { %>
     angular.module('<%= appname %>')
-        .config(['$routeProvider', function ($routeProvider) {
+        .config(function ($routeProvider) {
             $routeProvider
                 .when('<%= route %>', {
                     templateUrl: '<%= routeUrl %>',
@@ -11,7 +11,7 @@
                     controllerAs: "vm",
                     title: '<%= name %>'
                 });
-        }]);
+        });
     //<% } %><% if (uirouter) { %>
     angular.module('<%= appname %>')
         .run(function ($router) {
